@@ -19,8 +19,8 @@ CREATE TABLE ContributorInfo(
   firstName VARCHAR(255),
   emailAddress VARCHAR(255),
   PRIMARY KEY (giftCode),
-  CONSTRAINT fk-gci FOREIGN KEY (giftCode) REFERENCES Gifts(code)
-)
+  CONSTRAINT fk_gci FOREIGN KEY (giftCode) REFERENCES Gifts(code)
+);
 
 CREATE TABLE PrizeDefinitions (
   id BIGINT(20) NOT NULL AUTO_INCREMENT,
@@ -39,8 +39,8 @@ CREATE TABLE Tickets (
   giftCode VARCHAR(255) NOT NULL,
   prizeDefinitionId BIGINT(20) NOT NULL,
   PRIMARY KEY (code),
-  CONSTRAINT fk-tg FOREIGN KEY (giftCode) REFERENCES Gifts(code),
-  CONSTRAINT fk-tpd FOREIGN KEY (prizeDefinitionId) REFERENCES PrizeDefinitions(id)
+  CONSTRAINT fk_tg FOREIGN KEY (giftCode) REFERENCES Gifts(code),
+  CONSTRAINT fk_tpd FOREIGN KEY (prizeDefinitionId) REFERENCES PrizeDefinitions(id)
 );
 
 # --- !Downs
