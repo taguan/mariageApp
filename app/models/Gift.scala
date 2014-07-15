@@ -12,7 +12,7 @@ abstract class Gift
   val contributorInfo : ContributorInfo) {
 }
 
-class ContributorInfo(val lastName : Option[String], val firstName : Option[String], val emailAddress : Option[String]) {
+case class ContributorInfo(lastName : Option[String], firstName : Option[String], emailAddress : Option[String]) {
 
 }
 

@@ -16,4 +16,8 @@ class UnboundGift
   def this(amount : Int, message : Option[String], contributorInfo : ContributorInfo){
     this(UUID.randomUUID().toString, DateTime.now(), amount, message, contributorInfo)
   }
+
+  override def toString = {
+    s"UnboundGift : code $code, creationMoment $creationMoment, amount $amount, message $message, contributorInfo $contributorInfo"
+  }
 }
