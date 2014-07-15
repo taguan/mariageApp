@@ -6,10 +6,9 @@ CREATE TABLE Gifts (
   message TEXT,
   creationMoment DATETIME NOT NULL,
   isLottery BOOLEAN NOT NULL,
-  confirmed BOOLEAN NOT NULL DEFAULT 'F',
+  confirmed BOOLEAN NOT NULL DEFAULT 0,
   nbrTickets INT NOT NULL DEFAULT 0,
   nbrPacks INT NOT NULL DEFAULT 0,
-  contributorInfoId bigint(20) NOT NULL,
   PRIMARY KEY (code)
 );
 
@@ -36,7 +35,7 @@ CREATE TABLE PrizeDefinitions (
 
 CREATE TABLE Tickets (
   code VARCHAR(255) NOT NULL,
-  revealed BOOLEAN NOT NULL DEFAULT 'F',
+  revealed BOOLEAN NOT NULL DEFAULT 0,
   giftCode VARCHAR(255) NOT NULL,
   prizeDefinitionId BIGINT(20) NOT NULL,
   PRIMARY KEY (code),

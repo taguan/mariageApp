@@ -1,15 +1,18 @@
 package controllers
 
-import com.google.inject.Singleton
+import com.google.inject.{Inject, Singleton}
+import daos.UnboundGiftDAO
 import models.{ContributorInfo, UnboundGift}
 import play.api.Logger
+import play.api.db.DB
 import play.api.libs.json._
 import play.api.libs.json.Reads._
 import play.api.libs.functional.syntax._
 import play.api.mvc.{Action, Controller}
+import play.api.Play.current
 
 @Singleton
-class UnboundGifts extends Controller{
+class UnboundGifts @Inject() (unboundGiftDAO : UnboundGiftDAO) extends Controller{
 
   val logger = Logger(this.getClass)
 
@@ -51,8 +54,8 @@ class UnboundGifts extends Controller{
     val unboundGiftResult = request.body.validate[UnboundGiftWrapper]
     unboundGiftResult.fold(
       errors => BadRequest(JsError.toFlatJson(errors)),
-      unboundGiftWrapper => {
-        logger.info(s"Unbound gift : ${unboundGiftWrapper.unboundGift}")
+      unboundGiftWrapper => DB.withTransaction { implicit connection =>
+        unboundGiftDAO.insert(unboundGiftWrapper.unboundGift)
         Ok
       }
     )
