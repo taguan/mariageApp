@@ -7,5 +7,5 @@ class Ticket
   val lotteryParticipation : LotteryParticipation,
   val prizeDefinition : PrizeDefinition,
   val revealed : Boolean = false,
-  val code : String = UUID.randomUUID()){
+  val code : String = UUID.randomUUID().toString){
 }

@@ -16,7 +16,7 @@ class LotteryParticipation
   val nbrPacks : Int = 0
   ) extends Gift(code, creationMoment, amount, message, contributorInfo){
 
-  def this(amount : Int, message : Option[String], contributorInfo : ContributorInfo, nbrTickets : Int = 0, nbrPacks : Int = 0){
-    this(amount, UUID.randomUUID(), DateTime.now(), message, contributorInfo, false, nbrTickets, nbrPacks)
+  def this(amount : Int, message : Option[String], contributorInfo : ContributorInfo, nbrTickets : Int, nbrPacks : Int){
+    this(amount, UUID.randomUUID().toString, DateTime.now(), message, contributorInfo, false, nbrTickets, nbrPacks)
   }
 }

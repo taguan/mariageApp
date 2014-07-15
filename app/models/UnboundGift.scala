@@ -13,7 +13,7 @@ class UnboundGift
   contributorInfo : ContributorInfo
   ) extends Gift(code, creationMoment, amount, message, contributorInfo){
 
-  def this(amount : Int, message : String, contributorInfo : ContributorInfo){
-    this(UUID.randomUUID(), DateTime.now(), amount, message, contributorInfo)
+  def this(amount : Int, message : Option[String], contributorInfo : ContributorInfo){
+    this(UUID.randomUUID().toString, DateTime.now(), amount, message, contributorInfo)
   }
 }
