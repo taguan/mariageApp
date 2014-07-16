@@ -8,8 +8,7 @@ import play.api.mvc._
 class Application extends Controller {
 
   def index = Action {
-    val template = views.html.index("my app is so beautiful")
-    Ok(template)
+    Ok(views.html.main())
   }
 
 }
