@@ -6,7 +6,7 @@
 GET        /                    @controllers.Application.index
 
 # UnboundGifts
-POST /rest/unboundGifts/        @controllers.UnboundGifts.create
+POST /rest/unboundGifts        @controllers.UnboundGifts.create
 
 # Map static resources from the /public folder to the /assets URL path
 GET        /assets/*file        controllers.Assets.at(path="/public", file)
