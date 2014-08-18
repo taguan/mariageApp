@@ -4,17 +4,15 @@ import com.google.inject.{Inject, Singleton}
 import daos.UnboundGiftDAO
 import models.{ContributorInfo, UnboundGift}
 import play.api.Logger
-import play.api.db.DB
-import play.api.libs.json._
-import play.api.libs.json.Reads._
-import play.api.libs.functional.syntax._
-import play.api.mvc.{Action, Controller}
 import play.api.Play.current
+import play.api.db.DB
+import play.api.libs.functional.syntax._
+import play.api.libs.json.Reads._
+import play.api.libs.json._
+import play.api.mvc.{Action, Controller}
 
 @Singleton
 class UnboundGifts @Inject() (unboundGiftDAO : UnboundGiftDAO) extends Controller{
-
-  val logger = Logger(this.getClass)
 
   /*
   Example of expected json :
@@ -42,6 +40,19 @@ class UnboundGifts @Inject() (unboundGiftDAO : UnboundGiftDAO) extends Controlle
   implicit val unboundGiftWrapperRead : Reads[UnboundGiftWrapper] =
     (JsPath \ "unboundGift").read[UnboundGift].map(UnboundGiftWrapper)
 
+  implicit val unboundGiftWrite : Writes[UnboundGift] =(
+    (JsPath \ "id").write[String] and
+      (JsPath \ "amount").write[Int] and
+      (JsPath \ "message").writeNullable[String] and
+      (JsPath \ "lastName").writeNullable[String] and
+      (JsPath \ "firstName").writeNullable[String] and
+      (JsPath \ "emailAddress").writeNullable[String]
+    )((unboundGift : UnboundGift) => (unboundGift.code, unboundGift.amount, unboundGift.message, unboundGift.contributorInfo.lastName,
+    unboundGift.contributorInfo.firstName, unboundGift.contributorInfo.emailAddress))
+
+  implicit val unboundGiftWrapperWrite : Writes[UnboundGiftWrapper] =
+    (JsPath \ "unboundGift").write[UnboundGift].contramap(unlift(UnboundGiftWrapper.unapply))
+
 
 
   def create = Action(parse.json){ request =>
@@ -49,8 +60,9 @@ class UnboundGifts @Inject() (unboundGiftDAO : UnboundGiftDAO) extends Controlle
     unboundGiftResult.fold(
       errors => Ok(Json.parse("""{"errors" : ["Une erreur est survenue"]}""")),
       unboundGiftWrapper => DB.withTransaction { implicit connection =>
-        unboundGiftDAO.insert(unboundGiftWrapper.unboundGift)
-        Ok
+        val createdGift = unboundGiftDAO.insert(unboundGiftWrapper.unboundGift)
+        Logger.info(s"Don (sans cadeau) enregistré $createdGift")
+        Ok(Json.toJson(UnboundGiftWrapper(createdGift)))
       }
     )
   }

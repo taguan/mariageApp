@@ -34,7 +34,8 @@ App.UnboundGift = DS.Model.extend({
         }
     },
     validateAmount : function(){
-      if(!parseInt(this.get('amount')) > 0){
+        var parsedNumber = parseInt(this.get('amount'));
+        if(isNaN(parsedNumber) || parsedNumber <= 0){
           this.get('errors').add('amount', "Ce montant n'est pas valide");
       }
     }
@@ -57,8 +58,9 @@ App.NewUnboundGiftController = Ember.ObjectController.extend({
                 this.get('model').save().then(function(){
                     console.log('ok');
                     that.transitionToRoute('unboundGiftThanks');
-                }, function(){
+                }, function(data){
                     console.log('error');
+                    console.log(data);
                     that.set('globalError', true);
                 });
             }
