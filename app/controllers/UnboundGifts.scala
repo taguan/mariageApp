@@ -61,7 +61,7 @@ class UnboundGifts @Inject() (unboundGiftDAO : UnboundGiftDAO) extends Controlle
       errors => Ok(Json.parse("""{"errors" : ["Une erreur est survenue"]}""")),
       unboundGiftWrapper => DB.withTransaction { implicit connection =>
         val createdGift = unboundGiftDAO.insert(unboundGiftWrapper.unboundGift)
-        Logger.info(s"Don (sans cadeau) enregistré $createdGift")
+        Logger.info(s"Gift (without lottery) registered $createdGift")
         Ok(Json.toJson(UnboundGiftWrapper(createdGift)))
       }
     )

@@ -19,4 +19,9 @@ class LotteryParticipation
   def this(amount : Int, message : Option[String], contributorInfo : ContributorInfo, nbrTickets : Int, nbrPacks : Int){
     this(amount, UUID.randomUUID().toString, DateTime.now(), message, contributorInfo, false, nbrTickets, nbrPacks)
   }
+
+  override def toString = {
+    s"LotteryParticipation : code $code, nbrTickets $nbrTickets, nbrPacks $nbrPacks, creationMoment $creationMoment, " +
+      s"amount $amount, message $message, contributorInfo $contributorInfo"
+  }
 }

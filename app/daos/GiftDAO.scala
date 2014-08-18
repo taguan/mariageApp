@@ -3,7 +3,7 @@ package daos
 import java.sql.Connection
 
 import com.google.inject.{Inject, Singleton}
-import models.{Gift, UnboundGift}
+import models.{LotteryParticipation, Gift, UnboundGift}
 import anorm._
 import JodaAnormHelper._
 
@@ -36,5 +36,21 @@ class UnboundGiftDAOImpl @Inject() (override val contributorInfoDAO : Contributo
       executeInsert()
 
     unboundGift
+  }
+}
+
+trait LotteryParticipationDAO extends GiftDAO[LotteryParticipation]
+
+@Singleton
+class LotteryParticipationDAOImpl @Inject() (override val contributorInfoDAO : ContributorInfoDAO) extends LotteryParticipationDAO with GenericGiftDAOImpl[LotteryParticipation] {
+  
+  override def insertGift(lotteryParticipation: LotteryParticipation)(implicit connection: Connection): LotteryParticipation = {
+    SQL"""
+          insert into Gifts(code, amount, message, creationMoment, isLottery, nbrTickets, nbrPacks)
+          VALUES(${lotteryParticipation.code}, ${lotteryParticipation.amount}, ${lotteryParticipation.message},
+          ${lotteryParticipation.creationMoment}, ${true}, ${lotteryParticipation.nbrTickets}, ${lotteryParticipation.nbrPacks})
+    """.executeInsert()
+    
+    lotteryParticipation
   }
 }
