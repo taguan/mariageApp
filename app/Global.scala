@@ -1,6 +1,7 @@
 import com.google.inject.{AbstractModule, Guice}
 import daos._
 import play.api.GlobalSettings
+import services.{LotteryServiceImpl, LotteryService}
 
 object Global extends GlobalSettings {
 
@@ -10,6 +11,8 @@ object Global extends GlobalSettings {
       bind(classOf[ContributorInfoDAO]).to(classOf[ContributorInfoDAOImpl])
       bind(classOf[LotteryParticipationDAO]).to(classOf[LotteryParticipationDAOImpl])
       bind(classOf[TicketDAO]).to(classOf[TicketDAOImpl])
+      bind(classOf[PrizeDAO]).to(classOf[PrizeDAOImpl])
+      bind(classOf[LotteryService]).to(classOf[LotteryServiceImpl])
     }
   })
 

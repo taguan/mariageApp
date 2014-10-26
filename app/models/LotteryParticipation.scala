@@ -24,6 +24,7 @@ class LotteryParticipation
     s"LotteryParticipation : code $code, nbrTickets $nbrTickets, nbrPacks $nbrPacks, creationMoment $creationMoment, " +
       s"amount $amount, message $message, contributorInfo $contributorInfo"
   }
+
 }
 
 case class LotteryParticipationWithTickets(participation : LotteryParticipation, tickets : List[Ticket])

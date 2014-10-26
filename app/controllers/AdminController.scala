@@ -6,9 +6,10 @@ import models._
 import play.api.db.DB
 import play.api.mvc.{Action, Controller}
 import play.api.Play.current
+import services.LotteryService
 
 @Singleton
-class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationDAO, ticketDAO : TicketDAO) extends Controller{
+class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationDAO, ticketDAO : TicketDAO, lotteryService : LotteryService) extends Controller{
   def viewGifts() = Action{
     val giftsAndTickets : List[Either[LotteryParticipationWithTickets,UnboundGift]]  = DB.withConnection {
       implicit connection => lotteryParticipationDAO.getAll().map {
@@ -23,5 +24,12 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
     DB.withConnection { implicit connection =>
       Ok(views.html.adminUnconfirmed(lotteryParticipationDAO.unconfirmedParticipations()))
     }
+  }
+
+  def confirmParticipation(code : String) = Action{
+    DB.withTransaction{ implicit connection =>
+      lotteryService.attributeTickets(lotteryParticipationDAO.getParticipation(code))
+    }
+    Redirect(routes.AdminController.viewUnconfirmedParticipations())
   }
 }

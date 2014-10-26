@@ -55,7 +55,9 @@ class UnboundGiftDAOImpl @Inject() (override val contributorInfoDAO : Contributo
 }
 
 trait LotteryParticipationDAO extends GiftDAO[LotteryParticipation] {
+  def getParticipation(code: String): LotteryParticipation
   def unconfirmedParticipations()(implicit connection: Connection) : List[LotteryParticipation]
+  def confirmParticipation(participation : LotteryParticipation)(implicit connection: Connection) : Unit
 }
 
 @Singleton
@@ -80,5 +82,21 @@ class LotteryParticipationDAOImpl @Inject() (override val contributorInfoDAO : C
       new LotteryParticipation(row[Int]("amount"), row[String]("code"), row[DateTime]("creationMoment"),
         row[Option[String]]("message"), contributorInfo, row[Boolean]("confirmed"), row[Int]("nbrTickets"), row[Int]("nbrPacks"))
     }.toList
+  }
+
+  override def confirmParticipation(participation : LotteryParticipation)(implicit connection: Connection): Unit = {
+    SQL"""
+          update Gifts set confirmed = ${true} where code = ${participation.code}
+    """.executeUpdate()
+  }
+
+  override def getParticipation(code: String): LotteryParticipation = {
+    SQL"""
+      select * from Gifts g inner join ContributorInfo c on c.giftCode = g.code where g.code = $code
+    """().map{ row =>
+      val contributorInfo = ContributorInfo(row[Option[String]]("lastName"), row[Option[String]]("firstName"), row[Option[String]]("emailAddress"))
+      new LotteryParticipation(row[Int]("amount"), row[String]("code"), row[DateTime]("creationMoment"),
+        row[Option[String]]("message"), contributorInfo, row[Boolean]("confirmed"), row[Int]("nbrTickets"), row[Int]("nbrPacks"))
+    }.toList.head
   }
 }
