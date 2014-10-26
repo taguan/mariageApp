@@ -9,6 +9,7 @@ object Global extends GlobalSettings {
       bind(classOf[UnboundGiftDAO]).to(classOf[UnboundGiftDAOImpl])
       bind(classOf[ContributorInfoDAO]).to(classOf[ContributorInfoDAOImpl])
       bind(classOf[LotteryParticipationDAO]).to(classOf[LotteryParticipationDAOImpl])
+      bind(classOf[TicketDAO]).to(classOf[TicketDAOImpl])
     }
   })
 

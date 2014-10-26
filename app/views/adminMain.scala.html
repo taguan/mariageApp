@@ -1,0 +1,31 @@
+@(title: String)(content: Html)
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Admin - Mariage Marie et Benoît</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    </head>
+    <body>
+
+        <div class="navbar">
+            <ul class="nav navbar-nav">
+                <li>Lots</li>
+                <li>Participations</li>
+                <li>En attente</li>
+            </ul>
+        </div>
+        <div class="container">
+
+            <div class="page-header">
+                <h1>@title</h1>
+            </div>
+            <div class="row">
+            @content
+            </div>
+
+        </div> <!-- Fin container principal -->
+
+    </body>
+</html>

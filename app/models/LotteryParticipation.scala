@@ -25,3 +25,5 @@ class LotteryParticipation
       s"amount $amount, message $message, contributorInfo $contributorInfo"
   }
 }
+
+case class LotteryParticipationWithTickets(participation : LotteryParticipation, tickets : List[Ticket])

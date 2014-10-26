@@ -1,0 +1,10 @@
+@(lotteryParticipations: List[LotteryParticipationWithTickets], unboundGifts : List[UnboundGift])
+
+@adminMain("Admin - participations"){
+    <ul>
+    @for(lotteryParticipation <- lotteryParticipations) {
+       <li>@lotteryParticipation.participation.code</li>
+    }
+    </ul>
+
+}

@@ -3,12 +3,14 @@ package daos
 import java.sql.Connection
 
 import com.google.inject.{Inject, Singleton}
-import models.{LotteryParticipation, Gift, UnboundGift}
+import models.{ContributorInfo, LotteryParticipation, Gift, UnboundGift}
 import anorm._
 import JodaAnormHelper._
+import org.joda.time.DateTime
 
 trait GiftDAO[A <: Gift] {
   def insert(gift : A)(implicit connection : Connection) : A
+  def getAll()(implicit connection : Connection) : List[Gift]
 }
 
 trait GenericGiftDAOImpl[A <: Gift] extends GiftDAO[A] {
@@ -22,6 +24,18 @@ trait GenericGiftDAOImpl[A <: Gift] extends GiftDAO[A] {
   }
 
   def insertGift(gift : A)(implicit connection : Connection) : A
+
+  override def getAll()(implicit connection : Connection) : List[Gift] =  {
+    SQL"""
+      select * from Gifts g inner join ContributorInfo c on c.giftCode = g.code order by g.creationMoment
+    """().map{ row =>
+      val contributorInfo = ContributorInfo(row[Option[String]]("lastName"), row[Option[String]]("firstName"), row[Option[String]]("emailAddress"))
+      if(row[Boolean]("isLottery")) new LotteryParticipation(row[Int]("amount"), row[String]("code"), row[DateTime]("creationMoment"),
+        row[Option[String]]("message"), contributorInfo, row[Boolean]("confirmed"), row[Int]("nbrTickets"), row[Int]("nbrPacks"))
+      else new UnboundGift(row[String]("code"), row[DateTime]("creationMoment"), row[Int]("amount"), row[Option[String]]("message"), contributorInfo)
+    }.toList
+  }
+
 }
 
 trait UnboundGiftDAO extends GiftDAO[UnboundGift]
@@ -37,6 +51,7 @@ class UnboundGiftDAOImpl @Inject() (override val contributorInfoDAO : Contributo
 
     unboundGift
   }
+
 }
 
 trait LotteryParticipationDAO extends GiftDAO[LotteryParticipation]
