@@ -1,7 +1,7 @@
 package controllers
 
 import com.google.inject.{Inject, Singleton}
-import daos.{TicketDAO, UnboundGiftDAO, LotteryParticipationDAO}
+import daos.{TicketDAO, LotteryParticipationDAO}
 import models._
 import play.api.db.DB
 import play.api.mvc.{Action, Controller}
@@ -17,5 +17,11 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
       }
     }
     Ok(views.html.adminParticipations(giftsAndTickets.filter(_.isLeft).map(_.left.get), giftsAndTickets.filter(_.isRight).map(_.right.get)))
+  }
+
+  def viewUnconfirmedParticipations() = Action{
+    DB.withConnection { implicit connection =>
+      Ok(views.html.adminUnconfirmed(lotteryParticipationDAO.unconfirmedParticipations()))
+    }
   }
 }

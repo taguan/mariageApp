@@ -1,0 +1,10 @@
+@(lotteryParticipations: List[LotteryParticipation])
+
+@adminMain("Admin - unconfirmed"){
+    <ul>
+    @for(lotteryParticipation <- lotteryParticipations) {
+        <li>@lotteryParticipation.code</li>
+    }
+    </ul>
+
+}

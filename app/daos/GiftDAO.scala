@@ -54,7 +54,9 @@ class UnboundGiftDAOImpl @Inject() (override val contributorInfoDAO : Contributo
 
 }
 
-trait LotteryParticipationDAO extends GiftDAO[LotteryParticipation]
+trait LotteryParticipationDAO extends GiftDAO[LotteryParticipation] {
+  def unconfirmedParticipations()(implicit connection: Connection) : List[LotteryParticipation]
+}
 
 @Singleton
 class LotteryParticipationDAOImpl @Inject() (override val contributorInfoDAO : ContributorInfoDAO) extends LotteryParticipationDAO with GenericGiftDAOImpl[LotteryParticipation] {
@@ -67,5 +69,16 @@ class LotteryParticipationDAOImpl @Inject() (override val contributorInfoDAO : C
     """.executeInsert()
     
     lotteryParticipation
+  }
+
+  override def unconfirmedParticipations()(implicit connection: Connection) : List[LotteryParticipation] = {
+    SQL"""
+      select * from Gifts g inner join ContributorInfo c on c.giftCode = g.code where g.isLottery = ${true}
+      and g.confirmed = ${false} order by g.creationMoment
+    """().map{ row =>
+      val contributorInfo = ContributorInfo(row[Option[String]]("lastName"), row[Option[String]]("firstName"), row[Option[String]]("emailAddress"))
+      new LotteryParticipation(row[Int]("amount"), row[String]("code"), row[DateTime]("creationMoment"),
+        row[Option[String]]("message"), contributorInfo, row[Boolean]("confirmed"), row[Int]("nbrTickets"), row[Int]("nbrPacks"))
+    }.toList
   }
 }

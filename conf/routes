@@ -17,4 +17,6 @@ GET         /assets/*file                      controllers.Assets.at(path="/publ
 
 #ADMIN
 
-GET /admin/participations                      @controllers.AdminController.viewGifts
+GET         /admin/participations              @controllers.AdminController.viewGifts
+GET         /admin/unconfirmed                 @controllers.AdminController.viewUnconfirmedParticipations()
+
