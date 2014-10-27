@@ -1,10 +1,16 @@
 @(lotteryParticipations: List[LotteryParticipation])(implicit flash:Flash)
 
 @adminMain("Admin - unconfirmed"){
-    <ul>
-    @for(lotteryParticipation <- lotteryParticipations) {
-        <li>@lotteryParticipation.code</li>
+
+    @for(participation <- lotteryParticipations) {
+        <div>
+            <h3>@participation.contributorInfo.firstName @participation.contributorInfo.lastName <a href="@routes.AdminController.confirmParticipation(participation.code)">Confirmer</a></h3>
+            <p>@participation.contributorInfo.emailAddress.map{ email =>
+                @email - @participation.creationMoment.toString("dd/MM HH:mm")
+            }</p>
+            <p>Tickets : @participation.nbrTickets  Packs : @participation.nbrPacks Montant : @participation.amount</p>
+            <p>@participation.message</p>
+        </div>
     }
-    </ul>
 
 }

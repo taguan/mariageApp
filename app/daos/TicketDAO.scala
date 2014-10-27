@@ -19,7 +19,7 @@ class TicketDAOImpl extends TicketDAO {
           select revealed, name, isWinning from Tickets inner join PrizeDefinitions on prizeDefinitionId = id
           where giftCode = ${participation.code}
     """().map{ row =>
-      new Ticket(participation, if(row[Boolean]("isWinning")) Some(row[String]("name")) else None, row[Boolean]("revelead"))
+      new Ticket(participation, if(row[Boolean]("isWinning")) Some(row[String]("name")) else None, row[Boolean]("revealed"))
     }.toList
   }
 

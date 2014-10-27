@@ -27,7 +27,7 @@ trait GenericGiftDAOImpl[A <: Gift] extends GiftDAO[A] {
 
   override def getAll()(implicit connection : Connection) : List[Gift] =  {
     SQL"""
-      select * from Gifts g inner join ContributorInfo c on c.giftCode = g.code order by g.creationMoment
+      select * from Gifts g inner join ContributorInfo c on c.giftCode = g.code order by g.creationMoment desc
     """().map{ row =>
       val contributorInfo = ContributorInfo(row[Option[String]]("lastName"), row[Option[String]]("firstName"), row[Option[String]]("emailAddress"))
       if(row[Boolean]("isLottery")) new LotteryParticipation(row[Int]("amount"), row[String]("code"), row[DateTime]("creationMoment"),

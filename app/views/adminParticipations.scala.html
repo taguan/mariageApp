@@ -1,10 +1,41 @@
 @(lotteryParticipations: List[LotteryParticipationWithTickets], unboundGifts : List[UnboundGift])(implicit flash:Flash)
 
 @adminMain("Admin - participations"){
-    <ul>
-    @for(lotteryParticipation <- lotteryParticipations) {
-       <li>@lotteryParticipation.participation.code</li>
-    }
-    </ul>
+    <div>
+        <h1>participations à la lotterie</h1>
+        @for(participation <- lotteryParticipations) {
+            <div>
+                <h3>@participation.participation.contributorInfo.firstName @participation.participation.contributorInfo.lastName</h3>
+                <p>@participation.participation.contributorInfo.emailAddress.map{ email =>
+                    @email - @participation.participation.creationMoment.toString("dd/MM HH:mm")
+                }</p>
+                <p>Tickets : @participation.participation.nbrTickets  Packs : @participation.participation.nbrPacks Montant : @participation.participation.amount</p>
+                <p>@participation.participation.message</p>
+                <div>
+                    <h4>Tickets :</h4>
+                    @for(ticket <- participation.tickets) {
+                        <p>@ticket.prizeName.map{ name =>
+                            @name
+                        }.getOrElse{
+                            perdu
+                        } @if(ticket.revealed){révélé }</p>
+                        <p>@ticket.code</p>
+                    }
+                </div>
+            </div>
+        }
+
+        <h1>dons sans lotterie</h1>
+        @for(gift <- unboundGifts) {
+            <div>
+                <h3>@gift.contributorInfo.firstName @gift.contributorInfo.lastName</h3>
+                <p>@gift.contributorInfo.emailAddress.map{ email =>
+                    @email - @gift.creationMoment.toString("dd/MM HH:mm")
+                }</p>
+                <p>Montant : @gift.amount</p>
+                <p>@gift.message</p>
+            </div>
+        }
+    </div>
 
 }

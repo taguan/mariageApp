@@ -26,11 +26,13 @@ class LotteryServiceImpl @Inject()(val lotteryParticipationDAO : LotteryParticip
 
   def attributePacks(nbrOfPacksToAttribute: Int, alreadyWonPrices: List[WinningPrizeDefinition])
                    (implicit participation: LotteryParticipation, lostDefinition : LostDefinition, prizes : List[WinningPrizeDefinition], connection:Connection) : List[WinningPrizeDefinition]= {
-    attributeTickets(4, attributeWinningTicket(alreadyWonPrices) :: alreadyWonPrices)
+    if(nbrOfPacksToAttribute == 0) return alreadyWonPrices
+    attributePacks(nbrOfPacksToAttribute - 1, attributeTickets(4, attributeWinningTicket(alreadyWonPrices) :: alreadyWonPrices))
   }
 
   def attributeTickets(nbrOfTicketsToAttribute: Int, alreadyWonPrices: List[WinningPrizeDefinition])
                       (implicit participation: LotteryParticipation, lostDefinition : LostDefinition, prizes : List[WinningPrizeDefinition], connection:Connection) : List[WinningPrizeDefinition]={
+    if(nbrOfTicketsToAttribute == 0) return alreadyWonPrices
     attributeTickets(nbrOfTicketsToAttribute - 1, attributeTicket(alreadyWonPrices))
   }
 
@@ -55,7 +57,7 @@ class LotteryServiceImpl @Inject()(val lotteryParticipationDAO : LotteryParticip
   def getNotAlreadyWonWinningPrize(alreadyWonPrices: List[WinningPrizeDefinition])
                                   (implicit prizes : List[WinningPrizeDefinition]) : WinningPrizeDefinition = {
     val winningPrize: WinningPrizeDefinition = prizes((Math.random() * prizes.length).floor.toInt)
-    if(alreadyWonPrices.contains(winningPrize)) getNotAlreadyWonWinningPrize(alreadyWonPrices)
+    if(alreadyWonPrices.contains(winningPrize)) return getNotAlreadyWonWinningPrize(alreadyWonPrices)
     winningPrize
   }
 
