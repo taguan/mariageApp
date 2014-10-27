@@ -1,0 +1,25 @@
+@(winningDefinitionForm : Form[_])(implicit flash:Flash)
+
+@adminMain("Admin - new prize"){
+    @helper.form(action = routes.AdminController.createWinningDefinition(), 'enctype -> "multipart/form-data") {
+
+        Name :
+        <input type="text" name="name"  /> <br>
+
+        Quantity :
+        <input type="text" name="quantity"  /> <br>
+
+        Image  :
+        <input type="file" name="image"><br>
+        Pdf :
+        <input type="file" name="pdf">
+
+        <p>
+            <input type="submit">
+        </p>
+
+
+
+    }
+
+}

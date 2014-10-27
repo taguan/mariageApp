@@ -38,6 +38,91 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
     Redirect(routes.AdminController.viewUnconfirmedParticipations())
   }
 
+  def manageWinningDefinitions = Action{ implicit request => DB.withConnection{ implicit connection =>
+    Ok(views.html.winningDefinitions(prizeDAO.getWinningDefinitions()))
+    }
+  }
+
+  val winningDefinitionForm = Form(tuple("name" -> nonEmptyText(), "quantity" -> number))
+
+  def newWinningDefinition = Action{ implicit request =>
+    Ok(views.html.newWinningDef(winningDefinitionForm))
+  }
+
+  def createWinningDefinition = Action { implicit request => DB.withConnection { implicit connection =>
+    var errorResult : Option[Result] = None
+    winningDefinitionForm.bindFromRequest().fold(
+      formWithErrors => errorResult = Some(Redirect(routes.AdminController.newWinningDefinition()).flashing(
+        "error" -> "erreur dans le formulaire"
+      )),
+      winningDefTuple => {
+        val winningPrize : WinningPrizeDefinition = prizeDAO.createWinningPrize(winningDefTuple._1, winningDefTuple._2)
+        request.body.asMultipartFormData.map(multipartForm => {
+          multipartForm.file("image").map { image =>
+            FileUtil.getExtension(image.contentType).map { extension =>
+              image.ref.moveTo(FileUtil.imagePath(winningPrize.id), replace = true)
+            }.getOrElse {
+              errorResult = Some(Redirect(routes.AdminController.newWinningDefinition()).flashing(
+                "error" -> "mauvais type d'image (png obligatoire)"
+              ))
+            }
+          }
+          multipartForm.file("pdf").map { pdf =>
+            FileUtil.getPDFExtension(pdf.contentType).map { extension =>
+              pdf.ref.moveTo(FileUtil.pdfPath(winningPrize.id), replace = true)
+            }.getOrElse {
+              errorResult = Some(Redirect(routes.AdminController.newWinningDefinition()).flashing(
+                "error" -> "pas un pdf"
+              ))
+            }
+          }})
+      })
+
+    errorResult.map(error => error).getOrElse(Redirect(routes.AdminController.manageWinningDefinitions()).flashing(
+      "success" -> "prix créé avec succès"
+    ))
+  }}
+
+  def showEditWinningDefinition(id : Long) = Action { implicit request => DB.withConnection { implicit connection =>
+    DB.withConnection{ implicit connection =>
+      Ok(views.html.editWinningDef(winningDefinitionForm, prizeDAO.getWinningPrize(id)))
+    }
+  }}
+
+  def updateWinningDefinition(id : Long) = Action { implicit request => DB.withConnection { implicit connection =>
+    var errorResult : Option[Result] = None
+    winningDefinitionForm.bindFromRequest().fold(
+      formWithErrors => errorResult = Some(Redirect(routes.AdminController.showEditWinningDefinition(id)).flashing(
+        "error" -> "erreur dans le formulaire"
+      )),
+      winningDefTuple => {
+        prizeDAO.updatePrize(id,winningDefTuple._1, winningDefTuple._2)
+        request.body.asMultipartFormData.map(multipartForm => {
+          multipartForm.file("image").map { image =>
+            FileUtil.getExtension(image.contentType).map { extension =>
+              image.ref.moveTo(FileUtil.imagePath(id), replace = true)
+            }.getOrElse {
+              errorResult = Some(Redirect(routes.AdminController.showEditWinningDefinition(id)).flashing(
+                "error" -> "mauvais type d'image (png obligatoire)"
+              ))
+            }
+          }
+          multipartForm.file("pdf").map { pdf =>
+            FileUtil.getPDFExtension(pdf.contentType).map { extension =>
+              pdf.ref.moveTo(FileUtil.pdfPath(id), replace = true)
+            }.getOrElse {
+              errorResult = Some(Redirect(routes.AdminController.showEditWinningDefinition(id)).flashing(
+                "error" -> "pas un pdf"
+              ))
+            }
+          }})
+      })
+
+    errorResult.map(error => error).getOrElse(Redirect(routes.AdminController.manageWinningDefinitions()).flashing(
+      "success" -> "prix édité avec succès"
+    ))
+  }}
+
   val lostDefinitionForm = Form(single("probability" -> number))
 
   def manageLostDefinition = Action{ implicit request =>

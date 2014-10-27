@@ -1,0 +1,12 @@
+@(winningDefinitions: List[WinningPrizeDefinition])(implicit flash:Flash)
+
+@adminMain("Prize definition"){
+    <a href="@routes.AdminController.newWinningDefinition()">Nouveau prix</a>
+    <ul>
+        <li>Nom - quantité initiale - quantité restante</li>
+    @for(winningDefinition <- winningDefinitions) {
+        <li><a href="@routes.AdminController.showEditWinningDefinition(winningDefinition.id)">@winningDefinition.name</a>
+            - @winningDefinition.quantity - @winningDefinition.remainingQuantity</li>
+    }
+    </ul>
+}

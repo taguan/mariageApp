@@ -1,0 +1,23 @@
+@(winningDefinitionForm : Form[_], winningDefinition : WinningPrizeDefinition)(implicit flash:Flash)
+
+@adminMain("Admin - lost definition"){
+    @helper.form(action = routes.AdminController.updateWinningDefinition(winningDefinition.id), 'enctype -> "multipart/form-data") {
+
+        Name :
+        <input type="text" name="name" value="@winningDefinition.name" /> <br>
+
+        Remaining quantity :
+        <input type="text" name="quantity"  value="@winningDefinition.remainingQuantity" /> <br>
+
+        Image <img src="@routes.AdminController.sendImage(winningDefinition.id)">  :
+        <input type="file" name="image"><br>
+        Pdf (<a href="@routes.AdminController.sendPdf(winningDefinition.id)">current pdf</a> :
+        <input type="file" name="pdf">
+
+        <p>
+            <input type="submit">
+        </p>
+
+    }
+
+}

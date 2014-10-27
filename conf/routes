@@ -24,5 +24,9 @@ GET         /admin/confirm/:code               @controllers.AdminController.conf
 POST        /admin/modifyLostDefinition        @controllers.AdminController.updateLostDefinition
 GET         /admin/sendImage/:id               @controllers.AdminController.sendImage(id : Long)
 GET         /admin/sendPdf/:id                 @controllers.AdminController.sendPdf(id : Long)
-
+GET         /admin/prizes                      @controllers.AdminController.manageWinningDefinitions
+GET         /admin/createPrize                 @controllers.AdminController.newWinningDefinition
+POST        /admin/createPrize                  @controllers.AdminController.createWinningDefinition
+GET         /admin/prizes/:id                  @controllers.AdminController.showEditWinningDefinition(id : Long)
+POST        /admin/prizes/:id                  @controllers.AdminController.updateWinningDefinition(id : Long)
 
