@@ -1,7 +1,7 @@
 # --- !Ups
 
-INSERT INTO PrizeDefinitions(`name`, imagePath, pdfPath, isWinning, probability, quantity, remainingQuantity)
-VALUES ('lost', 'lost.jpg', 'lost.pdf', 0, 50, 0, 0);
+INSERT INTO PrizeDefinitions(`name`, isWinning, probability, quantity, remainingQuantity)
+VALUES ('lost',  0, 50, 0, 0);
 
 # --- !Downs
 

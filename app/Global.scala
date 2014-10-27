@@ -1,9 +1,13 @@
 import com.google.inject.{AbstractModule, Guice}
 import daos._
-import play.api.GlobalSettings
-import services.{LotteryServiceImpl, LotteryService}
+import play.api.{Application, GlobalSettings, Play}
+import services.{FileUtil, LotteryService, LotteryServiceImpl}
 
 object Global extends GlobalSettings {
+
+  override def onStart(app: Application) {
+    createFileDirs()
+  }
 
   val injector = Guice.createInjector(new AbstractModule {
     protected def configure() {
@@ -17,4 +21,8 @@ object Global extends GlobalSettings {
   })
 
   override def getControllerInstance[A](controllerClass: Class[A]): A = injector.getInstance(controllerClass)
+
+  def createFileDirs(){
+    Play.current.getFile(FileUtil.FILES_DIR).mkdir()
+  }
 }

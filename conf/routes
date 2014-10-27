@@ -19,4 +19,10 @@ GET         /assets/*file                      controllers.Assets.at(path="/publ
 
 GET         /admin/participations              @controllers.AdminController.viewGifts
 GET         /admin/unconfirmed                 @controllers.AdminController.viewUnconfirmedParticipations()
+GET         /admin/lostDefintion               @controllers.AdminController.manageLostDefinition
+GET         /admin/confirm/:code               @controllers.AdminController.confirmParticipation(code : String)
+POST        /admin/modifyLostDefinition        @controllers.AdminController.updateLostDefinition
+GET         /admin/sendImage/:id               @controllers.AdminController.sendImage(id : Long)
+GET         /admin/sendPdf/:id                 @controllers.AdminController.sendPdf(id : Long)
+
 

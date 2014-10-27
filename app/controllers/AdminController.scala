@@ -1,16 +1,19 @@
 package controllers
 
 import com.google.inject.{Inject, Singleton}
-import daos.{TicketDAO, LotteryParticipationDAO}
+import daos.{LotteryParticipationDAO, PrizeDAO, TicketDAO}
 import models._
-import play.api.db.DB
-import play.api.mvc.{Action, Controller}
 import play.api.Play.current
-import services.LotteryService
+import play.api.data.Forms._
+import play.api.data._
+import play.api.db.DB
+import play.api.i18n.Messages
+import play.api.mvc.{Result, Action, Controller}
+import services.{FileUtil, LotteryService, Mailer}
 
 @Singleton
-class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationDAO, ticketDAO : TicketDAO, lotteryService : LotteryService) extends Controller{
-  def viewGifts() = Action{
+class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationDAO, ticketDAO : TicketDAO, lotteryService : LotteryService, prizeDAO : PrizeDAO) extends Controller{
+  def viewGifts() = Action{ implicit request =>
     val giftsAndTickets : List[Either[LotteryParticipationWithTickets,UnboundGift]]  = DB.withConnection {
       implicit connection => lotteryParticipationDAO.getAll().map {
         case g: UnboundGift => Right(g)
@@ -20,16 +23,71 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
     Ok(views.html.adminParticipations(giftsAndTickets.filter(_.isLeft).map(_.left.get), giftsAndTickets.filter(_.isRight).map(_.right.get)))
   }
 
-  def viewUnconfirmedParticipations() = Action{
+  def viewUnconfirmedParticipations() = Action{ implicit request =>
     DB.withConnection { implicit connection =>
       Ok(views.html.adminUnconfirmed(lotteryParticipationDAO.unconfirmedParticipations()))
     }
   }
 
-  def confirmParticipation(code : String) = Action{
+  def confirmParticipation(code : String) = Action{ implicit request =>
     DB.withTransaction{ implicit connection =>
-      lotteryService.attributeTickets(lotteryParticipationDAO.getParticipation(code))
+      val participation: LotteryParticipation = lotteryParticipationDAO.getParticipation(code)
+      lotteryService.attributeTickets(participation)
+      participation.contributorInfo.emailAddress.map(mail => Mailer.sendMail(mail :: Nil, "Ticket accepté", views.html.confirmationMail()))
     }
     Redirect(routes.AdminController.viewUnconfirmedParticipations())
+  }
+
+  val lostDefinitionForm = Form(single("probability" -> number))
+
+  def manageLostDefinition = Action{ implicit request =>
+    DB.withConnection{ implicit connection =>
+      Ok(views.html.lostDefinition(lostDefinitionForm, prizeDAO.getLostDefinition()))
+    }
+  }
+
+
+  def updateLostDefinition()  = Action { implicit request => DB.withConnection{implicit connection =>
+    var errorResult : Option[Result] = None
+    lostDefinitionForm.bindFromRequest().fold(
+      formWithErrors => errorResult = Some(Redirect(routes.AdminController.manageLostDefinition()).flashing(
+        "error" -> "mauvaise probabilité"
+      )),
+      probability => {
+        val lostDefinition =  prizeDAO.getLostDefinition()
+        request.body.asMultipartFormData.map(multipartForm => {
+          multipartForm.file("image").map { image =>
+            FileUtil.getExtension(image.contentType).map { extension =>
+              image.ref.moveTo(FileUtil.imagePath(lostDefinition.id), replace = true)
+            }.getOrElse {
+               errorResult = Some(Redirect(routes.AdminController.manageLostDefinition()).flashing(
+                "error" -> "mauvais type d'image (png obligatoire)"
+              ))
+            }
+          }
+          multipartForm.file("pdf").map { pdf =>
+            FileUtil.getPDFExtension(pdf.contentType).map { extension =>
+              pdf.ref.moveTo(FileUtil.pdfPath(lostDefinition.id), replace = true)
+            }.getOrElse {
+              errorResult = Some(Redirect(routes.AdminController.manageLostDefinition()).flashing(
+                "error" -> "pas un pdf"
+              ))
+            }
+        }})
+        if(probability != lostDefinition.probability) prizeDAO.updateLostProbability(probability)
+      })
+
+    errorResult.map(error => error).getOrElse(Redirect(routes.AdminController.manageLostDefinition()).flashing(
+      "success" -> "mise à jour ok"
+    ))
+    }
+  }
+
+  def sendImage(definitionId : Long) = Action{ implicit request =>
+      Ok.sendFile(FileUtil.imagePath(definitionId), inline = true)
+  }
+
+  def sendPdf(definitionId : Long) = Action{ implicit request =>
+    Ok.sendFile(FileUtil.pdfPath(definitionId), inline = false)
   }
 }

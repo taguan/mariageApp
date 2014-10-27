@@ -1,0 +1,22 @@
+@(lostForm : Form[_], lostDefinition : LostDefinition)(implicit flash:Flash)
+
+@adminMain("Admin - lost definition"){
+    @helper.form(action = routes.AdminController.updateLostDefinition(), 'enctype -> "multipart/form-data") {
+
+        Probability of loosing :
+        <input type="text" name="probability" value="@lostDefinition.probability" /> <br>
+
+        Lost image <img src="@routes.AdminController.sendImage(lostDefinition.id)">  :
+        <input type="file" name="image"><br>
+        Lost pdf (<a href="@routes.AdminController.sendPdf(lostDefinition.id)">current pdf</a> :
+        <input type="file" name="pdf">
+
+        <p>
+            <input type="submit">
+        </p>
+
+
+
+    }
+
+}

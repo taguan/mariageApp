@@ -5,9 +5,8 @@ class WinningPrizeDefinition
   id : Long,
   val quantity : Int,
   val remainingQuantity : Int,
-  name : String, imagePath : String,
-  pdfPath : String
-  ) extends PrizeDefinition(id, name, imagePath, pdfPath){
+  name : String
+  ) extends PrizeDefinition(id, name){
 
 
   def canEqual(other: Any): Boolean = other.isInstanceOf[WinningPrizeDefinition]

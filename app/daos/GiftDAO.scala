@@ -55,7 +55,7 @@ class UnboundGiftDAOImpl @Inject() (override val contributorInfoDAO : Contributo
 }
 
 trait LotteryParticipationDAO extends GiftDAO[LotteryParticipation] {
-  def getParticipation(code: String): LotteryParticipation
+  def getParticipation(code: String)(implicit connection: Connection): LotteryParticipation
   def unconfirmedParticipations()(implicit connection: Connection) : List[LotteryParticipation]
   def confirmParticipation(participation : LotteryParticipation)(implicit connection: Connection) : Unit
 }
@@ -90,7 +90,7 @@ class LotteryParticipationDAOImpl @Inject() (override val contributorInfoDAO : C
     """.executeUpdate()
   }
 
-  override def getParticipation(code: String): LotteryParticipation = {
+  override def getParticipation(code: String)(implicit connection: Connection): LotteryParticipation = {
     SQL"""
       select * from Gifts g inner join ContributorInfo c on c.giftCode = g.code where g.code = $code
     """().map{ row =>
