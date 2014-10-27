@@ -3,17 +3,19 @@ package controllers
 import com.google.inject.{Inject, Singleton}
 import daos.{LotteryParticipationDAO, PrizeDAO, TicketDAO}
 import models._
+import play.api.Play
 import play.api.Play.current
 import play.api.data.Forms._
 import play.api.data._
 import play.api.db.DB
-import play.api.i18n.Messages
-import play.api.mvc.{Result, Action, Controller}
+import play.api.mvc._
 import services.{FileUtil, LotteryService, Mailer}
+
+import scala.concurrent.Future
 
 @Singleton
 class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationDAO, ticketDAO : TicketDAO, lotteryService : LotteryService, prizeDAO : PrizeDAO) extends Controller{
-  def viewGifts() = Action{ implicit request =>
+  def viewGifts() = Authenticated{ implicit request =>
     val giftsAndTickets : List[Either[LotteryParticipationWithTickets,UnboundGift]]  = DB.withConnection {
       implicit connection => lotteryParticipationDAO.getAll().map {
         case g: UnboundGift => Right(g)
@@ -23,13 +25,13 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
     Ok(views.html.adminParticipations(giftsAndTickets.filter(_.isLeft).map(_.left.get), giftsAndTickets.filter(_.isRight).map(_.right.get)))
   }
 
-  def viewUnconfirmedParticipations() = Action{ implicit request =>
+  def viewUnconfirmedParticipations() = Authenticated{ implicit request =>
     DB.withConnection { implicit connection =>
       Ok(views.html.adminUnconfirmed(lotteryParticipationDAO.unconfirmedParticipations()))
     }
   }
 
-  def confirmParticipation(code : String) = Action{ implicit request =>
+  def confirmParticipation(code : String) = Authenticated{ implicit request =>
     DB.withTransaction{ implicit connection =>
       val participation: LotteryParticipation = lotteryParticipationDAO.getParticipation(code)
       lotteryService.attributeTickets(participation)
@@ -38,18 +40,18 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
     Redirect(routes.AdminController.viewUnconfirmedParticipations())
   }
 
-  def manageWinningDefinitions = Action{ implicit request => DB.withConnection{ implicit connection =>
+  def manageWinningDefinitions = Authenticated{ implicit request => DB.withConnection{ implicit connection =>
     Ok(views.html.winningDefinitions(prizeDAO.getWinningDefinitions()))
     }
   }
 
   val winningDefinitionForm = Form(tuple("name" -> nonEmptyText(), "quantity" -> number))
 
-  def newWinningDefinition = Action{ implicit request =>
+  def newWinningDefinition = Authenticated{ implicit request =>
     Ok(views.html.newWinningDef(winningDefinitionForm))
   }
 
-  def createWinningDefinition = Action { implicit request => DB.withConnection { implicit connection =>
+  def createWinningDefinition = Authenticated { implicit request => DB.withConnection { implicit connection =>
     var errorResult : Option[Result] = None
     winningDefinitionForm.bindFromRequest().fold(
       formWithErrors => errorResult = Some(Redirect(routes.AdminController.newWinningDefinition()).flashing(
@@ -83,13 +85,13 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
     ))
   }}
 
-  def showEditWinningDefinition(id : Long) = Action { implicit request => DB.withConnection { implicit connection =>
+  def showEditWinningDefinition(id : Long) = Authenticated { implicit request => DB.withConnection { implicit connection =>
     DB.withConnection{ implicit connection =>
       Ok(views.html.editWinningDef(winningDefinitionForm, prizeDAO.getWinningPrize(id)))
     }
   }}
 
-  def updateWinningDefinition(id : Long) = Action { implicit request => DB.withConnection { implicit connection =>
+  def updateWinningDefinition(id : Long) = Authenticated { implicit request => DB.withConnection { implicit connection =>
     var errorResult : Option[Result] = None
     winningDefinitionForm.bindFromRequest().fold(
       formWithErrors => errorResult = Some(Redirect(routes.AdminController.showEditWinningDefinition(id)).flashing(
@@ -125,14 +127,14 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
 
   val lostDefinitionForm = Form(single("probability" -> number))
 
-  def manageLostDefinition = Action{ implicit request =>
+  def manageLostDefinition = Authenticated{ implicit request =>
     DB.withConnection{ implicit connection =>
       Ok(views.html.lostDefinition(lostDefinitionForm, prizeDAO.getLostDefinition()))
     }
   }
 
 
-  def updateLostDefinition()  = Action { implicit request => DB.withConnection{implicit connection =>
+  def updateLostDefinition()  = Authenticated { implicit request => DB.withConnection{implicit connection =>
     var errorResult : Option[Result] = None
     lostDefinitionForm.bindFromRequest().fold(
       formWithErrors => errorResult = Some(Redirect(routes.AdminController.manageLostDefinition()).flashing(
@@ -168,11 +170,45 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
     }
   }
 
-  def sendImage(definitionId : Long) = Action{ implicit request =>
+  def sendImage(definitionId : Long) = Authenticated{ implicit request =>
+    try
       Ok.sendFile(FileUtil.imagePath(definitionId), inline = true)
+    catch{
+        case e : Exception =>
+          Ok
+      }
   }
 
-  def sendPdf(definitionId : Long) = Action{ implicit request =>
-    Ok.sendFile(FileUtil.pdfPath(definitionId), inline = false)
+  def sendPdf(definitionId : Long) = Authenticated{ implicit request =>
+    try
+      Ok.sendFile(FileUtil.pdfPath(definitionId), inline = false)
+    catch{
+      case e : Exception =>
+        Ok
+    }
+  }
+
+
+  def showLogin = Action{ implicit request =>
+    Ok(views.html.login())
+  }
+
+  val loginForm = Form(single("login" -> nonEmptyText().verifying(login => login == Play.current.configuration.getString("admin.password").getOrElse("password"))))
+
+  def login = Action{ implicit request =>
+    loginForm.bindFromRequest().fold(
+      formWithErrors => Redirect(routes.AdminController.showLogin()),
+    login => Redirect(routes.AdminController.manageWinningDefinitions()).withSession(
+      "connected" -> "yes")
+    )
+  }
+
+  object Authenticated extends ActionFilter[Request] with ActionBuilder[Request] {
+    override protected def filter[A](request: Request[A]): Future[Option[Result]] = Future.successful {
+      if (request.session.get("connected").isEmpty)
+        Some(Redirect(routes.AdminController.showLogin()))
+      else
+        None
+    }
   }
 }
