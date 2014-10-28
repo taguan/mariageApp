@@ -15,15 +15,23 @@ class Tickets @Inject() (ticketDAO : TicketDAO, participationDAO : LotteryPartic
 
   implicit val ticketWrite : Writes[Ticket] = new Writes[Ticket] {
     def writes(ticket: Ticket) = Json.obj(
-      "code" -> ticket.code
+      "id" -> ticket.code
     )
   }
 
   case class TicketsWrapper(tickets : List[Ticket])
 
-  implicit val ticketWrapperWrite : Writes[TicketsWrapper] = new Writes[TicketsWrapper] {
+  implicit val ticketsWrapperWrite : Writes[TicketsWrapper] = new Writes[TicketsWrapper] {
     override def writes(wrapper: TicketsWrapper): JsValue = Json.obj(
       "tickets" -> wrapper.tickets
+    )
+  }
+
+  case class TicketWrapper(ticket : Ticket)
+
+  implicit val ticketWrapperWrite : Writes[TicketWrapper] = new Writes[TicketWrapper] {
+    override def writes(wrapper: TicketWrapper): JsValue = Json.obj(
+      "ticket" -> wrapper.ticket
     )
   }
 
@@ -38,9 +46,19 @@ class Tickets @Inject() (ticketDAO : TicketDAO, participationDAO : LotteryPartic
     }
   }
 
-  def sendImage(participationCode : String, ticketCode : String) = Action { DB.withConnection { implicit connection =>
+  def getTicket(ticketCode : String) = Action { DB.withConnection { implicit connection =>
       try {
-        val prizeId: Long = ticketDAO.getPrizeId(participationCode, ticketCode)
+        Ok(Json.toJson(TicketWrapper(ticketDAO.getTicket(ticketCode))))
+      }
+      catch {
+        case e: Exception => NotFound
+      }
+    }
+  }
+
+  def sendImage(ticketCode : String) = Action { DB.withConnection { implicit connection =>
+      try {
+        val prizeId: Long = ticketDAO.getPrizeId(ticketCode)
         Ok.sendFile(FileUtil.imagePath(prizeId), inline = true)
       }
       catch {
@@ -50,9 +68,9 @@ class Tickets @Inject() (ticketDAO : TicketDAO, participationDAO : LotteryPartic
     }
   }
 
-  def sendPdf(participationCode : String, ticketCode : String) = Action { DB.withConnection { implicit connection =>
+  def sendPdf(ticketCode : String) = Action { DB.withConnection { implicit connection =>
       try {
-        val prizeId: Long = ticketDAO.getPrizeId(participationCode, ticketCode)
+        val prizeId: Long = ticketDAO.getPrizeId(ticketCode)
         Ok.sendFile(FileUtil.pdfPath(prizeId), inline = false)
       }
       catch {

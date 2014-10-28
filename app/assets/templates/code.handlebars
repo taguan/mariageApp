@@ -1,0 +1,6 @@
+<div>
+    {{#if generalError}}
+        mauvais code...
+    {{/if}}
+    <button {{action 'sendCode'}}>Entrer un code</button>{{input type="text" value=participationCode}}
+</div>

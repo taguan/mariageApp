@@ -16,7 +16,11 @@ App.Router.map(function() {
     this.route("newUnboundGift", { path : "/faire-un-don"});
     this.route("unboundGiftThanks", { path : "/merci"});
     this.route("newLotteryParticipation", { path : "/participer-a-la-lotterie"});
-    this.route("lotteryParticipationThanks", { path : "/merci-participation"})
+    this.route("lotteryParticipationThanks", { path : "/merci-participation"});
+    this.route("code", { path : "/entrer-code"});
+    this.resource("tickets", { path : "/tickets/:participationCode"}, function(){
+        this.route("show", { path : "/:ticketCode"})
+    });
 });
 
 App.UnboundGift = DS.Model.extend({
@@ -65,6 +69,58 @@ App.LotteryParticipation = App.UnboundGift.extend({
         this.set('amount', ((this.get('nbrTickets') * 10) || 0) + ((this.get('nbrPacks') * 50) || 0))
     }.observes('nbrTickets', 'nbrPacks')
 });
+
+App.Ticket = DS.Model.extend();
+
+App.CodeController = Ember.Controller.extend({
+    generalError : false,
+    participationCode : null,
+    actions : {
+        sendCode : function(){
+            var self = this;
+            this.set('generalError', false);
+            if(this.get('participationCode')){
+                this.store.find('ticket', { participationCode : this.get('participationCode')}).then(function(){
+                    self.transitionToRoute('tickets', self.get('participationCode'));
+                }).fail(function(){
+                    self.set('generalError', true);
+                })
+            }
+            else{
+                this.set('generalError', true);
+            }
+        }
+    }
+});
+
+
+
+App.TicketsRoute = Ember.Route.extend({
+    model : function(params){
+        return this.store.find('ticket', { participationCode : params.participationCode})
+    }
+});
+
+App.TicketsController = Ember.ArrayController.extend({
+    modelWithIndices: function() {
+        return this.get('model').map(function(i, idx) {
+            return {item: i, index: idx + 1};
+        });
+    }.property('model.@each')
+});
+
+App.TicketsShowRoute = Ember.Route.extend({
+    model : function(params){
+        return this.store.find('ticket', params.ticketCode)
+    }
+});
+
+App.TicketsShowController = Ember.ObjectController.extend({
+    pdfUrl : function(){
+        return "/ticket/pdf/" + this.get('id')
+    }.property('id')
+});
+
 
 App.NewUnboundGiftRoute = Ember.Route.extend({
     model : function(){

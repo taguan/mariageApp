@@ -1,0 +1,9 @@
+
+<ul>
+{{#each modelWithIndices}}
+    <li>{{#link-to 'tickets.show' item.id}}Ticket {{index}}{{/link-to}}</li>
+{{/each}}
+
+</ul>
+
+{{outlet}}

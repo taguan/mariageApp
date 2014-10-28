@@ -3,37 +3,38 @@
 # ~~~~
 
 # Home page
-GET         /                                                   @controllers.Application.index
+GET         /                                  @controllers.Application.index
 
 # UnboundGifts
-POST        /rest/unboundGifts                                  @controllers.UnboundGifts.create
+POST        /rest/unboundGifts                 @controllers.UnboundGifts.create
 
 # LotteryParticipations
-POST        /rest/lotteryParticipations                         @controllers.LotteryParticipations.create
+POST        /rest/lotteryParticipations        @controllers.LotteryParticipations.create
 
 # Tickets
-GET         /rest/tickets/:participationCode                    @controllers.Tickets.getTicketsForParticipation(participationCode : String)
-GET         /ticket/image/:participationCode/:ticketCode        @controllers.Tickets.sendImage(participationCode : String, ticketCode : String)
-GET         /ticket/pdf/:participationCode/:ticketCode          @controllers.Tickets.sendPdf(participationCode : String, ticketCode : String)
+GET         /rest/tickets/:ticketCode          @controllers.Tickets.getTicket(ticketCode : String)
+GET         /rest/tickets                      @controllers.Tickets.getTicketsForParticipation(participationCode : String)
+GET         /ticket/image/:ticketCode          @controllers.Tickets.sendImage(ticketCode : String)
+GET         /ticket/pdf/:ticketCode            @controllers.Tickets.sendPdf(ticketCode : String)
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                                       controllers.Assets.at(path="/public", file)
+GET         /assets/*file                      controllers.Assets.at(path="/public", file)
 
 
 #ADMIN
 
-GET         /admin/participations                               @controllers.AdminController.viewGifts
-GET         /admin/unconfirmed                                  @controllers.AdminController.viewUnconfirmedParticipations()
-GET         /admin/lostDefintion                                @controllers.AdminController.manageLostDefinition
-GET         /admin/confirm/:code                                @controllers.AdminController.confirmParticipation(code : String)
-POST        /admin/modifyLostDefinition                         @controllers.AdminController.updateLostDefinition
-GET         /admin/sendImage/:id                                @controllers.AdminController.sendImage(id : Long)
-GET         /admin/sendPdf/:id                                  @controllers.AdminController.sendPdf(id : Long)
-GET         /admin/prizes                                       @controllers.AdminController.manageWinningDefinitions
-GET         /admin/createPrize                                  @controllers.AdminController.newWinningDefinition
-POST        /admin/createPrize                                  @controllers.AdminController.createWinningDefinition
-GET         /admin/prizes/:id                                   @controllers.AdminController.showEditWinningDefinition(id : Long)
-POST        /admin/prizes/:id                                   @controllers.AdminController.updateWinningDefinition(id : Long)
-GET         /login                                              @controllers.AdminController.showLogin
-POST        /login                                              @controllers.AdminController.login
+GET         /admin/participations              @controllers.AdminController.viewGifts
+GET         /admin/unconfirmed                 @controllers.AdminController.viewUnconfirmedParticipations()
+GET         /admin/lostDefintion               @controllers.AdminController.manageLostDefinition
+GET         /admin/confirm/:code               @controllers.AdminController.confirmParticipation(code : String)
+POST        /admin/modifyLostDefinition        @controllers.AdminController.updateLostDefinition
+GET         /admin/sendImage/:id               @controllers.AdminController.sendImage(id : Long)
+GET         /admin/sendPdf/:id                 @controllers.AdminController.sendPdf(id : Long)
+GET         /admin/prizes                      @controllers.AdminController.manageWinningDefinitions
+GET         /admin/createPrize                 @controllers.AdminController.newWinningDefinition
+POST        /admin/createPrize                 @controllers.AdminController.createWinningDefinition
+GET         /admin/prizes/:id                  @controllers.AdminController.showEditWinningDefinition(id : Long)
+POST        /admin/prizes/:id                  @controllers.AdminController.updateWinningDefinition(id : Long)
+GET         /login                             @controllers.AdminController.showLogin
+POST        /login                             @controllers.AdminController.login
 
