@@ -35,7 +35,7 @@ class AdminController @Inject() (lotteryParticipationDAO : LotteryParticipationD
     DB.withTransaction{ implicit connection =>
       val participation: LotteryParticipation = lotteryParticipationDAO.getParticipation(code)
       lotteryService.attributeTickets(participation)
-      participation.contributorInfo.emailAddress.map(mail => Mailer.sendMail(mail :: Nil, "Ticket accepté", views.html.confirmationMail()))
+      participation.contributorInfo.emailAddress.map(mail => Mailer.sendMail(mail :: Nil, "Ticket accepté", views.html.confirmationMail(participation)))
     }
     Redirect(routes.AdminController.viewUnconfirmedParticipations())
   }
