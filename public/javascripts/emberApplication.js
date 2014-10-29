@@ -117,6 +117,9 @@ App.TicketsShowRoute = Ember.Route.extend({
 });
 
 App.TicketsShowController = Ember.ObjectController.extend({
+//    imageUrl : function(){
+//        return "/ticket/image/" + this.get('id')
+//    }.property('id'),
     pdfUrl : function(){
         return "/ticket/pdf/" + this.get('id')
     }.property('id')
@@ -170,5 +173,29 @@ App.NewLotteryParticipationController = Ember.ObjectController.extend({
                 });
             }
         }
+    }
+});
+
+App.ScratchImageView = Ember.View.extend({
+    id: Ember.computed.alias('controller.model.id'),
+    classNames: ['scratchImage'],
+    attributeBindings: ['bgImage'],
+    bgImage: function(){
+        return "/ticket/image/" + this.get('id')
+    }.property('id'),
+    bgImageObserver: function(){
+        this.rerender();
+    }.observes('id'),
+    didInsertElement: function(){
+        this.$().wScratchPad({
+            size        : 50,          // The size of the brush/scratch.
+            bg          : this.get('bgImage'),  // Background (image path or hex color).
+            fg          : '#6699ff',  // Foreground (image path or hex color).
+            realtime    : true,       // Calculates percentage in realitime.
+            scratchDown : null,       // Set scratchDown callback.
+            scratchUp   : null,       // Set scratchUp callback.
+            scratchMove : null,       // Set scratcMove callback.
+            cursor      : 'url("/assets/images/coin.png") 5 5, default' // Set cursor.
+        });
     }
 });
