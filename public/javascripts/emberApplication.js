@@ -12,8 +12,9 @@ App.ValidationUtils = {
 };
 
 App.Router.map(function() {
-    this.route("lottery", { path : "/lotterie"});
+    this.route("lottery", { path : "/loterie"});
     this.route("newUnboundGift", { path : "/faire-un-don"});
+    this.route("informations", { path : "/informations"});
     this.route("unboundGiftThanks", { path : "/merci"});
     this.route("newLotteryParticipation", { path : "/participer-a-la-lotterie"});
     this.route("lotteryParticipationThanks", { path : "/merci-participation"});

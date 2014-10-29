@@ -1,8 +1,34 @@
-<div>
-    Ceci apparait sur toutes les pages
+
+<header>
+	<div class="wrapper cf">
+		<div id="logo"><img src="/assets/images/logo.png" alt="">
+		</div>
+	</div>
+
+	<!-- nav -->
+  <nav class="cf">
+    <div class="wrapper cf">
+      <ul id="nav" class="sf-menu">
+        <li>{{#link-to 'index'}}Accueil{{/link-to}}</li>
+        <li>{{#link-to 'informations'}}Informations pratiques{{/link-to}}</li>
+        <li>{{#link-to 'lottery'}}Loterie{{/link-to}}</li>
+      </ul>
+     
+    </div>
+  </nav>
+  <!-- ends nav -->
+</header>
+<div class="page-bottom">
 </div>
+
+
+
 <div>
-    {{#link-to 'code'}}Entrer un code{{/link-to}}
+	<div id="tombola">
+		<div id="totombola">
+   			{{#link-to 'code'}}Entrer un code{{/link-to}}
+   		</div>
+   	</div>
 </div>
 <div>
     {{outlet}}
