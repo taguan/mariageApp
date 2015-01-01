@@ -1,10 +1,12 @@
-<h1>Faire un don</h1>
+<div class="page-content">
+     <div id="title"><img src="/assets/images/cadeau.png" alt=""></div>       
 {{#if globalError}}
 <div class="error">
     Une erreur est survenue...
 </div>
 {{/if}}
-<form>
+<form class="form-style">
+<fieldset><legend><b>Coordonnées personnelles</b></legend>
     {{input type="text" value=lastName placeholder="Nom de famille"}} <br />
     {{input type="text" value=firstName placeholder="Prénom"}} <br />
     {{input type="text" value=emailAddress placeholder="Adresse e-mail"}} <br />
@@ -13,15 +15,21 @@
         {{message}}
     </div>
     {{/each}}
+</fieldset>
+<fieldset><legend><b>Montant du cadeau</b></legend>
     {{input type="text" value=amount placeholder="Montant du cadeau"}} <br />
     {{#each errors.amount}}
     <div class="error">
         {{message}}
     </div>
     {{/each}}
+</fieldset>
+<fieldset><legend><b>Message</b></legend>
     {{textarea value=message cols="80" rows="6" placeholder="Message"}} <br />
+</fieldset>
 </form>
 <div>
     Merci de verser le montant précisé sur le compte ...
 </div>
 <div><button {{action 'send'}}>Envoyer le don</button></div>
+</div>

@@ -70,14 +70,29 @@ nav {
     padding:25px;
     background:#DBD3C8;
 }
+p{
+  border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    margin: 15px 0px 10px 0px;
+    border: 1px solid #967d71;
+  background:#f1eeec;
+   padding: 15px;
+}
 .page-content
 { 
-	width:900px;
+	width:800px;
 	color: #967d71;
-    margin:0 auto;
+    margin-top: -240px;
+    margin-bottom: 100px;
+    margin-right: 150px;
+    margin-left: 300px;
     padding:25px;
     background:  #DBD3C8;
     border-radius:5px;
+  text-decoration: none;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-weight: bold;
 }
 
 h2
@@ -108,3 +123,80 @@ h2
   text-decoration: none;
   color: #d36e70;
  }
+#title {
+  color: #70ac77;
+}
+
+<style type="text/css">
+.form-style{
+    max-width: 450px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+}
+.form-style fieldset{
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    margin: 0px 0px 10px 0px;
+    border: 1px solid #70ac77;
+    padding: 20px;
+    background: #caedce;
+    box-shadow: inset 0px 0px 15px #caedce;
+    -moz-box-shadow: inset 0px 0px 15px #caedce;
+    -webkit-box-shadow: inset 0px 0px 15px #caedce;
+}
+.form-style fieldset legend{
+  color: #967d71;
+  text-decoration: none;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-weight: bold;
+    border-top: 1px solid #70ac77;
+    border-left: 1px solid #70ac77;
+    border-right: 1px solid #70ac77;
+    border-radius: 5px 5px 0px 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    -moz-border-radius: 5px 5px 0px 0px;
+    background: #caedce;
+    padding: 0px 8px 3px 8px;
+    font-weight: normal;
+    font-size: 12px;
+}
+.form-style textarea{
+    width:250px;
+    height:100px;
+}
+.form-style input[type=text],
+.form-style input[type=date],
+.form-style input[type=datetime],
+.form-style input[type=number],
+.form-style input[type=search],
+.form-style input[type=time],
+.form-style input[type=url],
+.form-style input[type=email],
+.form-style select, 
+.form-style textarea{
+  display:block;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border: 1px solid #70ac77;
+    outline: none;
+    color: #967d71;
+    padding: 5px 8px 5px 8px;
+      background: #e8f3e9;
+    width:50%;
+}
+.form-style  input[type=submit],
+.form-style  input[type=button]{
+    background: #e8f3e9;
+    border: 1px solid #C94A81;
+    padding: 10px 15px 10px 15px;
+    color: #FFCBE2;
+    font-weight: bold;
+}
+.required{
+    color:red;
+    font-weight:normal;
+}
+</style>

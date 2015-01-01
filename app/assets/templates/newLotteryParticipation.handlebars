@@ -1,10 +1,11 @@
-<h1>Participer à la lotterie</h1>
+<div class="page-content">
+     <div id="title"><img src="/assets/images/participer.png" alt=""></div>       
 {{#if globalError}}
     <div class="error">
     Une erreur est survenue...
     </div>
 {{/if}}
-<form>
+<form class="form-style">
 {{#each errors.amount}}
 <div class="error">
     Veuillez prendre au moins un ticket ou un pack.
@@ -16,24 +17,28 @@
     {{message}}
 </div>
 {{/each}}
-<label for="nbrPacks">Pack de 5 (50€) Min 1 gagnant ! </label> {{input type="text" id="nbrPacks" value=nbrPacks}} <br />
+<label for="nbrPacks">Pack de 5 (50€) Minimum 1 gagnant ! </label> {{input type="text" id="nbrPacks" value=nbrPacks}} <br />
 {{#each errors.nbrPacks}}
 <div class="error">
     {{message}}
 </div>
 {{/each}}
+<fieldset><legend><b>Coordonnées personnelles</b></legend>
 {{input type="text" value=lastName placeholder="Nom de famille"}} <br />
 {{input type="text" value=firstName placeholder="Prénom"}} <br />
 {{input type="text" value=emailAddress placeholder="Adresse e-mail"}} <br />
+</fieldset>
 {{#each errors.emailAddress}}
 <div class="error">
     {{message}}
 </div>
 {{/each}}
-
+<fieldset><legend><b>Message</b></legend>
 {{textarea value=message cols="80" rows="6" placeholder="Message"}} <br />
+</fieldset>
 </form>
 <div>
 Merci de verser {{amount}} € sur le compte ...
 </div>
 <div><button {{action 'send'}}>Confirmer</button></div>
+</div>
