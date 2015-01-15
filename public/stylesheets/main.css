@@ -25,7 +25,6 @@ header #logo img {
 
 nav {
   height: 68px;
-  float: center;
   width: 100%;
   margin-top: 0px;
   margin-bottom: 20px;
@@ -70,14 +69,14 @@ nav {
     padding:25px;
     background:#DBD3C8;
 }
-p{
-  border-radius: 10px;
+.styled {
+    border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     margin: 15px 0px 10px 0px;
     border: 1px solid #967d71;
-  background:#f1eeec;
-   padding: 15px;
+    background: #f1eeec;
+    padding: 15px;
 }
 .page-content
 { 
@@ -93,6 +92,10 @@ p{
   text-decoration: none;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   font-weight: bold;
+}
+
+strong{
+    color: #70AC77;
 }
 
 h2
@@ -127,7 +130,6 @@ h2
   color: #70ac77;
 }
 
-<style type="text/css">
 .form-style{
     max-width: 450px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -149,7 +151,6 @@ h2
   color: #967d71;
   text-decoration: none;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-  font-weight: bold;
     border-top: 1px solid #70ac77;
     border-left: 1px solid #70ac77;
     border-right: 1px solid #70ac77;
@@ -157,7 +158,7 @@ h2
     -webkit-border-radius: 5px 5px 0px 0px;
     -moz-border-radius: 5px 5px 0px 0px;
     background: #caedce;
-    padding: 0px 8px 3px 8px;
+    padding: 0 8px 3px 8px;
     font-weight: normal;
     font-size: 12px;
 }
@@ -199,4 +200,7 @@ h2
     color:red;
     font-weight:normal;
 }
-</style>
+
+a{
+    color: #70AC77;
+}
