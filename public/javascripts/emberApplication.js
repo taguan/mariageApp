@@ -117,9 +117,9 @@ App.TicketsShowRoute = Ember.Route.extend({
 });
 
 App.TicketsShowController = Ember.ObjectController.extend({
-//    imageUrl : function(){
-//        return "/ticket/image/" + this.get('id')
-//    }.property('id'),
+    imageUrl : function(){
+        return "/ticket/image/" + this.get('id')
+    }.property('id'),
     pdfUrl : function(){
         return "/ticket/pdf/" + this.get('id')
     }.property('id')
