@@ -1,0 +1,32 @@
+<div class="page-content">
+    <div id="title"><img src="/assets/images/cadeau.png" alt=""></div>
+    {{#if globalError}}
+        <div class="error">
+            Une erreur est survenue...
+        </div>
+    {{/if}}
+    {{#each errors.lastName}}
+        <div class="error">
+            {{message}}
+        </div>
+    {{/each}}
+    {{#each errors.nbrComing}}
+        <div class="error">
+            {{message}}
+        </div>
+    {{/each}}
+    <form class="form-style">
+        <fieldset><legend><b>Coordonnées personnelles</b></legend>
+            {{input type="text" value=lastName placeholder="Nom de famille"}} <br />
+            {{input type="text" value=firstName placeholder="Prénom"}} <br />
+        </fieldset>
+        <fieldset><legend><b>Confirmation</b></legend>
+            Je confirme ma présence : {{input type="checkbox" checked=isComing}}<br />
+            Nombre de personnes : {{input type="text" value=nbrComing placeholder="Nombre de personnes"}}
+        </fieldset>
+        <fieldset><legend><b>Commentaire</b></legend>
+            {{textarea value=comment cols="80" rows="6" placeholder="Commentaire"}} <br />
+        </fieldset>
+    </form>
+    <div><button {{action 'send'}}>Envoyer</button></div>
+</div>

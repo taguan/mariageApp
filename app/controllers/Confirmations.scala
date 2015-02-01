@@ -59,7 +59,7 @@ class Confirmations @Inject() (confirmationDAO : ConfirmationDAO) extends Contro
       errors => Ok(Json.parse("""{"errors" : ["Une erreur est survenue"]}""")),
       confirmationWrapper => DB.withTransaction { implicit connection =>
         val createdConfirmation = confirmationDAO.insert(confirmationWrapper.confirmation)
-        Logger.info(s"confirmation registered $confirmation")
+        Logger.info(s"confirmation registered $createdConfirmation")
         Ok(Json.toJson(ConfirmationWrapper(createdConfirmation)))
       }
     )

@@ -18,10 +18,36 @@ App.Router.map(function() {
     this.route("unboundGiftThanks", { path : "/merci"});
     this.route("newLotteryParticipation", { path : "/participer-a-la-lotterie"});
     this.route("lotteryParticipationThanks", { path : "/merci-participation"});
+    this.route("confirmation", { path : "/confirmation"});
+    this.route("confirmationOk", { path : "/merci-confirmation"});
     this.route("code", { path : "/entrer-code"});
     this.resource("tickets", { path : "/tickets/:participationCode"}, function(){
         this.route("show", { path : "/:ticketCode"})
     });
+});
+
+App.Confirmation = DS.Model.extend({
+    lastName: DS.attr('string'),
+    firstName:  DS.attr('string'),
+    isComing: DS.attr('boolean', {defaultValue : true}),
+    nbrComing: DS.attr('number', {defaultValue : 0}),
+    comment : DS.attr('string'),
+    validate : function(){
+        this.validateLastName();
+        this.validateNbrComing();
+        return this.get('isValid');
+    },
+    validateLastName : function(){
+        if(!this.get('lastName')){
+            this.get('errors').add('lastName', 'Requis');
+        }
+    },
+    validateNbrComing : function(){
+        var parsedNumber = parseInt(this.get('nbrComing'));
+        if(isNaN(parsedNumber) || parsedNumber <= 0){
+            this.get('errors').add('nbrComing', "Non valide");
+        }
+    }
 });
 
 App.UnboundGift = DS.Model.extend({
@@ -125,6 +151,29 @@ App.TicketsShowController = Ember.ObjectController.extend({
     }.property('id')
 });
 
+App.ConfirmationRoute = Ember.Route.extend({
+    model : function(){
+        return this.store.createRecord('confirmation', {})
+    }
+});
+
+App.ConfirmationController = Ember.ObjectController.extend({
+    globalError : false,
+    actions : {
+        send : function(){
+            var that = this;
+            this.set('globalError', false);
+            this.get('errors').clear();
+            if(this.get('model').validate()){
+                this.get('model').save().then(function(){
+                    that.transitionToRoute('confirmationOk');
+                }, function(){
+                    that.set('globalError', true);
+                });
+            }
+        }
+    }
+});
 
 App.NewUnboundGiftRoute = Ember.Route.extend({
     model : function(){
