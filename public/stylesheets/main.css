@@ -5,7 +5,7 @@
 
 body
 {
-	background-color: #DBD3C8;
+	background-color: #e0c9b8;
 }
 
 
@@ -60,14 +60,14 @@ nav {
 }
 #nav a:hover {
   border-bottom: 2px;
-  color: #569158;
+  color: #f79256;
 }
-.page-bottom
+.page-top
 { 
 	width:900px;
     margin:0 auto;
     padding:25px;
-    background:#DBD3C8;
+    background:#e0c9b8;
 }
 .styled {
     border-radius: 10px;
@@ -92,13 +92,13 @@ nav {
 .page-content
 { 
 	width:800px;
-	color: #967d71;
+	color: #b38b6e;
     margin-top: -240px;
     margin-bottom: 100px;
     margin-right: 150px;
     margin-left: 300px;
     padding:25px;
-    background:  #DBD3C8;
+    background:  #e0c9b8;
     border-radius:5px;
   text-decoration: none;
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -114,6 +114,10 @@ h2
 	color: #FFFFFF;
 }
 
+#container {
+  margin-left: 50px;
+}
+
 #tombola {
   width: 230px;
   height: 230px;
@@ -122,20 +126,20 @@ h2
 
  #totombola {
   position: relative;
-  color: #70ac77;
-  left:60px;
-  top:145px;
+  color: #bc9980;
+  left:65px;
+  top:165px;
  }
 
 #totombola a{
   text-decoration: none;
   font-weight: bold;
-  color: #70ac77;
+  color: #bc9980;
  }
 
  #totombola a:hover{
   text-decoration: none;
-  color: #d36e70;
+  color: #f79256;
  }
 #title {
   color: #70ac77;
