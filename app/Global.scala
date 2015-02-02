@@ -13,6 +13,7 @@ object Global extends GlobalSettings {
     protected def configure() {
       bind(classOf[UnboundGiftDAO]).to(classOf[UnboundGiftDAOImpl])
       bind(classOf[ContributorInfoDAO]).to(classOf[ContributorInfoDAOImpl])
+      bind(classOf[ConfirmationDAO]).to(classOf[ConfirmationDAOImpl])
       bind(classOf[LotteryParticipationDAO]).to(classOf[LotteryParticipationDAOImpl])
       bind(classOf[TicketDAO]).to(classOf[TicketDAOImpl])
       bind(classOf[PrizeDAO]).to(classOf[PrizeDAOImpl])

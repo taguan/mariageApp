@@ -5,6 +5,9 @@
 # Home page
 GET         /                                  @controllers.Application.index
 
+# Confirmations
+POST        /rest/confirmations                 @controllers.Confirmations.create
+
 # UnboundGifts
 POST        /rest/unboundGifts                 @controllers.UnboundGifts.create
 
