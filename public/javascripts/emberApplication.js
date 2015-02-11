@@ -15,6 +15,11 @@ App.Router.map(function() {
     this.route("lottery", { path : "/loterie"});
     this.route("newUnboundGift", { path : "/faire-un-don"});
     this.route("informations", { path : "/informations"});
+    this.route("nousenimages", { path : "/nous-en-images"});
+    this.route("boiteamessages", { path : "/boite-a-messages"});
+    this.route("dresscode", { path : "/dress-code"});
+    this.route("luiparelle", { path : "/luiparelle"});
+    this.route("elleparlui", { path : "/elleparlui"});
     this.route("unboundGiftThanks", { path : "/merci"});
     this.route("newLotteryParticipation", { path : "/participer-a-la-lotterie"});
     this.route("lotteryParticipationThanks", { path : "/merci-participation"});
@@ -239,7 +244,7 @@ App.ScratchImageView = Ember.View.extend({
         this.$().wScratchPad({
             size        : 50,          // The size of the brush/scratch.
             bg          : this.get('bgImage'),  // Background (image path or hex color).
-            fg          : '#6699ff',  // Foreground (image path or hex color).
+            fg          : '#91c898',  // Foreground (image path or hex color).
             realtime    : true,       // Calculates percentage in realitime.
             scratchDown : null,       // Set scratchDown callback.
             scratchUp   : null,       // Set scratchUp callback.

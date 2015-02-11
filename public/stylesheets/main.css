@@ -1,6 +1,6 @@
 .scratchImage{
-    height: 150px;
-    width: 150px;
+    height: 200px;
+    width: 300px;
 }
 
 body
@@ -58,10 +58,45 @@ nav {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 
 }
+
 #nav a:hover {
   border-bottom: 2px;
-  color: #e3868f;
+  color: #f79274;
 }
+
+img.opacity {
+  -webkit-transition: all 0.5s ease;
+     -moz-transition: all 0.5s ease;
+       -o-transition: all 0.5s ease;
+      -ms-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+}
+ 
+img.opacity:hover {
+  -webkit-transform: rotate(-10deg);
+     -moz-transform: rotate(-10deg);
+       -o-transform: rotate(-10deg);
+      -ms-transform: rotate(-10deg);
+          transform: rotate(-10deg);
+}
+
+img.opacity2 {
+  -webkit-transition: all 0.5s ease;
+     -moz-transition: all 0.5s ease;
+       -o-transition: all 0.5s ease;
+      -ms-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+}
+ 
+img.opacity2:hover {
+  -webkit-transform: rotate(10deg);
+     -moz-transform: rotate(10deg);
+       -o-transform: rotate(10deg);
+      -ms-transform: rotate(10deg);
+          transform: rotate(10deg);
+}
+
+
 .page-top
 { 
 	width:900px;
@@ -70,6 +105,17 @@ nav {
     background:#e0c9b8;
 }
 .styled {
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    margin: 15px 0px 10px 0px;
+    border: 1px solid #967d71;
+    background: #f1eeec;
+    padding: 15px;
+}
+
+.styled2 {
+    font color: #91c898;
     border-radius: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
@@ -139,10 +185,14 @@ h2
 
  #totombola a:hover{
   text-decoration: none;
-  color: #e3868f;
+  color: #f79274;
  }
 #title {
   color: #70ac77;
+}
+
+#tableaccueil img{ 
+  border-color: #e0c9b8;
 }
 
 .form-style{

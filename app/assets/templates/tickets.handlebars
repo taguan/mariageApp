@@ -1,10 +1,17 @@
-
-<ul>
+<div class="page-content">
+	
+    <div id="title"><img src="/assets/images/ticket.png" alt=""></div>
+     	<p>Merci pour votre participation à la Grande Loterie du Mariage !</p>
+     	<p>Toutes nos félicitations... vous êtes l'heureux(se) gagnant(e) de ce(s) ticket(s) : </p>
+     	<ul>
 {{#each modelWithIndices}}
-    <li>{{#link-to 'tickets.show' item.id}}Ticket {{index}}{{/link-to}}</li>
+    <p class= "styled2">{{#link-to 'tickets.show' item.id}}Ticket {{index}}{{/link-to}}</p>
 {{/each}}
 
 </ul>
 <div>
 {{outlet}}
+</div>
+     	<br>Grattez les sans attendre en passant votre souris sur <font color="#7eb784"><u>le(s) cadre(s) vert(s)</u></font> !</br>
+     		
 </div>
