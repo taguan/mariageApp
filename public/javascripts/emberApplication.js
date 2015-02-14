@@ -16,7 +16,7 @@ App.Router.map(function() {
     this.route("newUnboundGift", { path : "/faire-un-don"});
     this.route("informations", { path : "/informations"});
     this.route("nousenimages", { path : "/nous-en-images"});
-    this.route("boiteamessages", { path : "/boite-a-messages"});
+    this.resource("messages", { path : "/boite-a-messages"});
     this.route("dresscode", { path : "/dress-code"});
     this.route("luiparelle", { path : "/luiparelle"});
     this.route("elleparlui", { path : "/elleparlui"});
@@ -29,6 +29,20 @@ App.Router.map(function() {
     this.resource("tickets", { path : "/tickets/:participationCode"}, function(){
         this.route("show", { path : "/:ticketCode"})
     });
+});
+
+App.Message = DS.Model.extend({
+    name: DS.attr('string'),
+   message: DS.attr('string'),
+    validate: function(){
+        if(!this.get('name')){
+            this.get('errors').add('name', 'Requis');
+        }
+        if(!this.get('message')){
+            this.get('errors').add('message', 'Requis');
+        }
+        return this.get('isValid');
+    }
 });
 
 App.Confirmation = DS.Model.extend({
@@ -78,6 +92,38 @@ App.UnboundGift = DS.Model.extend({
         }
     }
 });
+
+App.MessagesRoute = Ember.Route.extend({
+    model: function(){
+        return this.store.find('message');
+    }
+});
+
+
+App.MessagesController = Ember.ArrayController.extend({
+    name : null,
+    message : null,
+    globalError : false,
+    actions : {
+        send : function(){
+            var that = this;
+            this.set('globalError', false);
+            if(this.get('name') && this.get('message')){
+                var createdMessage = this.store.createRecord('message', {name : this.get('name'), message : this.get('message')});
+                createdMessage.save().then(function(){
+                    that.set('name', null);
+                    that.set('message', null)
+                }, function(){
+                    that.set('globalError', true);
+                });
+            }
+            else{
+                this.set('globalError', true)
+            }
+        }
+    }
+});
+
 
 App.LotteryParticipation = App.UnboundGift.extend({
     nbrTickets: DS.attr('number'),

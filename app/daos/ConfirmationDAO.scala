@@ -8,6 +8,7 @@ import anorm._
 
 trait ConfirmationDAO {
   def insert(confirmation: Confirmation)(implicit connection: Connection): Confirmation
+  def getAll()(implicit connection: Connection): List[Confirmation]
 }
 
 
@@ -20,5 +21,13 @@ class ConfirmationDAOImpl extends ConfirmationDAO {
       executeInsert()
 
     confirmation
+  }
+
+  override def getAll()(implicit connection: Connection): List[Confirmation] = {
+    SQL"""
+      select * from Confirmations
+    """().map{ row =>
+      Confirmation(row[Long]("id"), row[String]("lastName"), row[Option[String]]("firstName"), row[Boolean]("isComing"), row[Option[String]]("comment"), row[Int]("nbrComing"))
+    }.toList
   }
 }

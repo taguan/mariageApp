@@ -18,6 +18,7 @@ object Global extends GlobalSettings {
       bind(classOf[TicketDAO]).to(classOf[TicketDAOImpl])
       bind(classOf[PrizeDAO]).to(classOf[PrizeDAOImpl])
       bind(classOf[LotteryService]).to(classOf[LotteryServiceImpl])
+      bind(classOf[MessageDAO]).to(classOf[MessageDAOImpl])
     }
   })
 

@@ -5,6 +5,10 @@
 # Home page
 GET         /                                  @controllers.Application.index
 
+# Messages
+GET         /rest/messages                 @controllers.Messages.getAll
+POST        /rest/messages                 @controllers.Messages.create
+
 # Confirmations
 POST        /rest/confirmations                 @controllers.Confirmations.create
 

@@ -1,0 +1,24 @@
+<div class="page-content">
+    <div id="title"><img src="/assets/images/rsvp.png" alt=""></div>
+    <p>Livre d'or de poupoune</p>
+
+    {{#if globalError}}
+        <div class="error">
+            Tous les champs sont requis.
+        </div>
+    {{/if}}
+
+    {{#each}}
+      message de {{name}}, contenu {{message}}
+    {{/each}}
+
+
+
+    <form class="form-style">
+        <b>Nom</b>
+        {{input type="text" value=name placeholder="Nom"}} <br />
+        <b>Message</b>
+        {{textarea value=message cols="80" rows="6" placeholder="Message"}}
+    </form>
+    <div><button {{action 'send'}}>Envoyer</button></div>
+</div>
