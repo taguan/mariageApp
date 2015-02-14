@@ -64,6 +64,91 @@ nav {
   color: #f79274;
 }
 
+
+.myButton a{
+  -moz-box-shadow:inset 0px 1px 0px 0px #f79274;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #f79274;
+  box-shadow:inset 0px 1px 0px 0px #f79274;
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d));
+  background:-moz-linear-gradient(top, #fc8d83 5%, #f79274 100%);
+  background:-webkit-linear-gradient(top, #fc8d83 5%, #f79274 100%);
+  background:-o-linear-gradient(top, #fc8d83 5%, #f79274 100%);
+  background:-ms-linear-gradient(top, #fc8d83 5%, #f79274 100%);
+  background:linear-gradient(to bottom, #fc8d83 5%, #f79274 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fc8d83', endColorstr='#f79274',GradientType=0);
+  background-color:#fc8d83;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  border:1px solid #d83526;
+  display:inline-block;
+  cursor:pointer;
+  color: #ffffff;
+  font-family:arial;
+  font-size:15px;
+  font-weight:bold;
+  padding:6px 24px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #b23e35;
+}
+.myButton:hover a{
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e4685d), color-stop(1, #fc8d83));
+  background:-moz-linear-gradient(top, #e4685d 5%, #fc8d83 100%);
+  background:-webkit-linear-gradient(top, #e4685d 5%, #fc8d83 100%);
+  background:-o-linear-gradient(top, #e4685d 5%, #fc8d83 100%);
+  background:-ms-linear-gradient(top, #e4685d 5%, #fc8d83 100%);
+  background:linear-gradient(to bottom, #e4685d 5%, #fc8d83 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e4685d', endColorstr='#fc8d83',GradientType=0);
+  background-color:#e4685d;
+}
+.myButton:active {
+  position:relative;
+  top:1px;
+}
+
+.myButton {
+  -moz-box-shadow:inset 0px 1px 0px 0px #f79274;
+  -webkit-box-shadow:inset 0px 1px 0px 0px #f79274;
+  box-shadow:inset 0px 1px 0px 0px #f79274;
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #fc8d83), color-stop(1, #e4685d));
+  background:-moz-linear-gradient(top, #fc8d83 5%, #f79274 100%);
+  background:-webkit-linear-gradient(top, #fc8d83 5%, #f79274 100%);
+  background:-o-linear-gradient(top, #fc8d83 5%, #f79274 100%);
+  background:-ms-linear-gradient(top, #fc8d83 5%, #f79274 100%);
+  background:linear-gradient(to bottom, #fc8d83 5%, #f79274 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fc8d83', endColorstr='#f79274',GradientType=0);
+  background-color:#fc8d83;
+  -moz-border-radius:6px;
+  -webkit-border-radius:6px;
+  border-radius:6px;
+  border:1px solid #d83526;
+  display:inline-block;
+  cursor:pointer;
+  color: #ffffff;
+  font-family:arial;
+  font-size:15px;
+  font-weight:bold;
+  padding:6px 24px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #b23e35;
+}
+.myButton:hover {
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e4685d), color-stop(1, #fc8d83));
+  background:-moz-linear-gradient(top, #e4685d 5%, #fc8d83 100%);
+  background:-webkit-linear-gradient(top, #e4685d 5%, #fc8d83 100%);
+  background:-o-linear-gradient(top, #e4685d 5%, #fc8d83 100%);
+  background:-ms-linear-gradient(top, #e4685d 5%, #fc8d83 100%);
+  background:linear-gradient(to bottom, #e4685d 5%, #fc8d83 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#e4685d', endColorstr='#fc8d83',GradientType=0);
+  background-color:#e4685d;
+}
+.myButton:active {
+  position:relative;
+  top:1px;
+}
+
+
+
 img.opacity {
   -webkit-transition: all 0.5s ease;
      -moz-transition: all 0.5s ease;
@@ -96,7 +181,32 @@ img.opacity2:hover {
           transform: rotate(10deg);
 }
 
+.lpe {
+  font-variant: small-caps;
+  font-size: 22px;
+  color:#f79274;
+}
+.cadremessage {
+  width:700px;
+  background:#fbe6d7;
+  border:1px solid #f79274;
+  padding:5px;
+  margin-bottom: 15px;
+  border-radius:5px;
+  -webkit-border-radius:5px;
+  -moz-border-radius:5px;
 
+}
+
+.messagecolor {
+  color:#f79274;
+}
+
+.messageit{
+  font-style:italic;
+  text-decoration: underline;
+  color:#f79274;
+}
 .page-top
 { 
 	width:900px;
@@ -161,7 +271,9 @@ h2
 }
 
 #container {
-  margin-left: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  width:1100px;
 }
 
 #tombola {

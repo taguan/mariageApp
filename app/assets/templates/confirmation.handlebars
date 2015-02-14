@@ -27,8 +27,8 @@
             Nombre de personnes : {{input type="text" value=nbrComing placeholder="Nombre de personnes"}}
         </fieldset>
         <fieldset><legend><b>Commentaire</b></legend>
-            {{textarea value=comment cols="80" rows="6" placeholder="Commentaire"}} <br />
+            {{textarea value=comment cols="80" rows="6" placeholder="Commentaire (Merci de préciser s'il y a un changement relatif à l'invitation reçue)."}} <br />
         </fieldset>
     </form>
-    <div><button {{action 'send'}}>Envoyer</button></div>
+    <div class="myButton"{{action 'send'}}>Envoyer</div>
 </div>
