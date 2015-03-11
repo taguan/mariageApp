@@ -63,7 +63,7 @@ App.Confirmation = DS.Model.extend({
     },
     validateNbrComing : function(){
         var parsedNumber = parseInt(this.get('nbrComing'));
-        if(isNaN(parsedNumber) || parsedNumber <= 0){
+        if(isNaN(parsedNumber) || parsedNumber < 0){
             this.get('errors').add('nbrComing', "Non valide");
         }
     }
