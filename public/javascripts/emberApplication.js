@@ -126,15 +126,15 @@ App.MessagesController = Ember.ArrayController.extend({
 
 
 App.LotteryParticipation = App.UnboundGift.extend({
-    nbrTickets: DS.attr('number'),
-    nbrPacks: DS.attr('number'),
+    nbrTickets: DS.attr('number', {defaultValue : 0}),
+    nbrPacks: DS.attr('number',  {defaultValue : 0}),
     validateNbrTickets : function(){
-        if(parseInt(this.get('nbrTickets')) <= 0){
+        if(parseInt(this.get('nbrTickets')) < 0){
             this.get('errors').add('nbrTickets', "Ce montant n'est pas valide");
         }
     },
     validateNbrPacks : function(){
-        if(parseInt(this.get('nbrPacks')) <= 0){
+        if(parseInt(this.get('nbrPacks')) < 0){
             this.get('errors').add('nbrPacks', "Ce montant n'est pas valide");
         }
     },
