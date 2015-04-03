@@ -62,6 +62,7 @@ App.Confirmation = DS.Model.extend({
         }
     },
     validateNbrComing : function(){
+        if(!this.get('nbrComing')) this.set('nbrComing', 0);
         var parsedNumber = parseInt(this.get('nbrComing'));
         if(isNaN(parsedNumber) || parsedNumber < 0){
             this.get('errors').add('nbrComing', "Non valide");
@@ -81,12 +82,13 @@ App.UnboundGift = DS.Model.extend({
         return this.get('isValid');
     },
     validateEmailAddress : function(){
-        if(!App.ValidationUtils.validateEmail(this.get('emailAddress'))){
+        if(!App.ValidationUtils.validateEmail(this.get('emailAddress').trim())){
             this.get('errors').add('emailAddress', 'Email non valide');
         }
     },
     validateAmount : function(){
-        var parsedNumber = parseInt(this.get('amount'));
+        if(!this.get('amount')) this.set('amount', 0);
+        var parsedNumber = parseInt(this.get('amount').trim());
         if(isNaN(parsedNumber) || parsedNumber <= 0){
             this.get('errors').add('amount', "Ce montant n'est pas valide");
         }
@@ -129,12 +131,16 @@ App.LotteryParticipation = App.UnboundGift.extend({
     nbrTickets: DS.attr('number', {defaultValue : 0}),
     nbrPacks: DS.attr('number',  {defaultValue : 0}),
     validateNbrTickets : function(){
-        if(parseInt(this.get('nbrTickets')) < 0){
+        if(!this.get('nbrTickets')) this.set('nbrTickets', 0);
+        var parsedNumber = parseInt(this.get('nbrTickets'));
+        if(isNaN(parsedNumber) || parsedNumber < 0){
             this.get('errors').add('nbrTickets', "Ce montant n'est pas valide");
         }
     },
     validateNbrPacks : function(){
-        if(parseInt(this.get('nbrPacks')) < 0){
+        if(!this.get('nbrPacks')) this.set('nbrPacks', 0);
+        var parsedNumber = parseInt(this.get('nbrPacks'));
+        if(isNaN(parsedNumber) || parsedNumber < 0){
             this.get('errors').add('nbrPacks', "Ce montant n'est pas valide");
         }
     },
