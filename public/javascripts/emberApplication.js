@@ -59,13 +59,18 @@ App.Confirmation = DS.Model.extend({
     validateLastName : function(){
         if(!this.get('lastName')){
             this.get('errors').add('lastName', 'Requis');
+        } else {
+            this.set('lastName', $.trim(this.get('lastName')));
         }
     },
     validateNbrComing : function(){
         if(!this.get('nbrComing')) this.set('nbrComing', 0);
-        var parsedNumber = parseInt(this.get('nbrComing'));
+        var parsedNumber = parseInt($.trim(this.get('nbrComing')));
         if(isNaN(parsedNumber) || parsedNumber < 0){
             this.get('errors').add('nbrComing', "Non valide");
+        }
+        else {
+            this.set('nbrComing', parsedNumber);
         }
     }
 });
@@ -82,15 +87,25 @@ App.UnboundGift = DS.Model.extend({
         return this.get('isValid');
     },
     validateEmailAddress : function(){
-        if(!App.ValidationUtils.validateEmail(this.get('emailAddress').trim())){
-            this.get('errors').add('emailAddress', 'Email non valide');
+        if(!this.get('emailAddress')) this.get('errors').add('emailAddress', 'Email requis');
+        else{
+            var email = $.trim(this.get('emailAddress'));
+            if(!App.ValidationUtils.validateEmail(email)){
+                this.get('errors').add('emailAddress', 'Email non valide');
+            }
+            else{
+                this.set('emailAddress', email);
+            }
         }
     },
     validateAmount : function(){
         if(!this.get('amount')) this.set('amount', 0);
-        var parsedNumber = parseInt(this.get('amount').trim());
+        var parsedNumber = parseInt($.trim(this.get('amount')));
         if(isNaN(parsedNumber) || parsedNumber <= 0){
             this.get('errors').add('amount', "Ce montant n'est pas valide");
+        }
+        else {
+            this.set('amount', parsedNumber);
         }
     }
 });
@@ -132,16 +147,22 @@ App.LotteryParticipation = App.UnboundGift.extend({
     nbrPacks: DS.attr('number',  {defaultValue : 0}),
     validateNbrTickets : function(){
         if(!this.get('nbrTickets')) this.set('nbrTickets', 0);
-        var parsedNumber = parseInt(this.get('nbrTickets'));
+        var parsedNumber = parseInt($.trim(this.get('nbrTickets')));
         if(isNaN(parsedNumber) || parsedNumber < 0){
             this.get('errors').add('nbrTickets', "Ce montant n'est pas valide");
+        }
+        else{
+            this.set('nbrTickets', parsedNumber);
         }
     },
     validateNbrPacks : function(){
         if(!this.get('nbrPacks')) this.set('nbrPacks', 0);
-        var parsedNumber = parseInt(this.get('nbrPacks'));
+        var parsedNumber = parseInt($.trim(this.get('nbrPacks')));
         if(isNaN(parsedNumber) || parsedNumber < 0){
             this.get('errors').add('nbrPacks', "Ce montant n'est pas valide");
+        }
+        else{
+            this.set('nbrPacks', parsedNumber);
         }
     },
     validate : function(){
