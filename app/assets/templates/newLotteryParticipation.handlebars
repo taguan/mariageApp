@@ -1,30 +1,34 @@
 <div class="page-content">
-     <div id="title"><img src="/assets/images/participer.png" alt=""></div>       
-{{#if globalError}}
+     <div id="title"><img src="/assets/images/participer.png" alt=""></div>
     <div class="error">
-    Une erreur est survenue...
+        Désolé, la loterie, c'est fini... Vous pouvez toujours {{#link-to 'newUnboundGift'}}nous faire un don{{/link-to}} si le coeur vous en dit.<br /> A samedi !
     </div>
+{{!--
+{{#if globalError}}
+<div class="error">
+Une erreur est survenue...
+</div>
 {{/if}}
-    {{#each errors.amount}}
-        <div class="error">
-            Veuillez prendre au moins un ticket ou un pack.
-        </div>
-    {{/each}}
-    {{#each errors.nbrTickets}}
-        <div class="error">
-            {{message}}
-        </div>
-    {{/each}}
-    {{#each errors.nbrPacks}}
-        <div class="error">
-            {{message}}
-        </div>
-    {{/each}}
-    {{#each errors.emailAddress}}
-        <div class="error">
-            {{message}}
-        </div>
-    {{/each}}
+{{#each errors.amount}}
+    <div class="error">
+        Veuillez prendre au moins un ticket ou un pack.
+    </div>
+{{/each}}
+{{#each errors.nbrTickets}}
+    <div class="error">
+        {{message}}
+    </div>
+{{/each}}
+{{#each errors.nbrPacks}}
+    <div class="error">
+        {{message}}
+    </div>
+{{/each}}
+{{#each errors.emailAddress}}
+    <div class="error">
+        {{message}}
+    </div>
+{{/each}}
 <form class="form-style">
 <label for="nbrTickets">Tickets (10€)</label> {{input type="text" id="nbrTickets" value=nbrTickets}} <br />
 
@@ -40,8 +44,9 @@
 {{textarea value=message cols="80" rows="6" placeholder="Message"}} <br />
 </fieldset>
 </form>
-    <p class="styled">
+<p class="styled">
 Merci de verser {{amount}} € sur le compte BE73 0634 2911 1160
 </p>
-<div class="myButton"{{action 'send'}}>Confirmer</div>
+<div disabled="disabled" class="myButton"{{action 'send'}}>Confirmer</div>
+--}}
 </div>
